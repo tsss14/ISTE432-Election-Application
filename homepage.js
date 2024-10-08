@@ -1,7 +1,14 @@
 function init() {
-    var p = document.createElement("p");
-    var textNode1 = document.createTextNode("This is a test of jquery");
-    p.appendChild(textNode1);
-    document.body.appendChild(p);
+    const header = $('<div>');
+    const placeholderName = "placeholder name";
+    $(document.body).append(header);
+    $(header).addClass("text-bg-primary p-3").text("Welcome! " + placeholderName);
+    $(document.body).append('<div class="btn-group-vertical" role="group" aria-label="Vertical button group">');
+    $('div').last().append('<button type="button" class="btn btn-primary">Your Societies</button>');
+    $('div').last().append('<button type="button" class="btn btn-primary">Ongoing Elections</button>');
+    $('div').last().append('<button type="button" class="btn btn-primary">Past Elections</button>');
+    $('div').last().append('<button type="button" class="btn btn-primary">Your Profile</button>');
+    $('div').last().append('<button type="button" class="btn btn-primary">Logout</button>');
+    $('div').last().addClass('position-absolute top-50 start-50 translate-middle')
 }
 $(document).ready(init);
