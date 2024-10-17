@@ -28,7 +28,7 @@ function getUserData(uname, pwd) {
                 return info;
             } else {
                 console.log('no results');
-                return;
+                return "";
             }
         }
     })
