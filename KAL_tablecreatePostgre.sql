@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."User" (
 -- Table americanDreamDB.Initiative
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."Initiative" (
-  initiative_id SERIAL,
+  initiative_id SERIAL PRIMARY KEY,
   election_id INT NOT NULL,
   initName VARCHAR(45),
   subtitle VARCHAR(45),
@@ -36,22 +36,20 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Initiative" (
   initVotesAllowed INT,
   positiveVotes INT,
   negativeVotes INT,
-  neutralVotes INT,
-  PRIMARY KEY (initiative_id, election_id)
+  neutralVotes INT
 );
 
 -- -----------------------------------------------------
 -- Table americanDreamDB.Candidate
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."Candidate" (
-  candidate_id SERIAL,
+  candidate_id SERIAL PRIMARY KEY,
   office_id INT NOT NULL,
   candidateName VARCHAR(45),
   subtitle VARCHAR(45),
   description TEXT,
   imagePath VARCHAR(45),
-  positiveVotes INT,
-  PRIMARY KEY (candidate_id, office_id)
+  positiveVotes INT
 );
 
 -- -----------------------------------------------------
