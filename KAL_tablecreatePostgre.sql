@@ -13,9 +13,11 @@ CREATE SCHEMA IF NOT EXISTS americanDreamDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."User" (
   user_id SERIAL PRIMARY KEY,
-  name VARCHAR(45),
-  email VARCHAR(45),
+  first_name VARCHAR(45),
+  last_name VARCHAR(45),
+  username VARCHAR(45),
   phone VARCHAR(45),
+  society_id INT,
   role VARCHAR(45),
   password VARCHAR(45),
   hasVoted BOOLEAN

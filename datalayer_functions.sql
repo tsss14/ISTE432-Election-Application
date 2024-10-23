@@ -26,3 +26,18 @@ BEGIN
         AND password = p_password;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION add_user(
+    u_id INT,
+    fname VARCHAR,
+    lname VARCHAR,
+    uname VARCHAR,
+    s_id INT,
+    u_role VARCHAR
+)
+START 
+    INSERT INTO americanDreamDB."User"
+        (user_id, first_name, last_name, username, society_id, role)
+    VALUES
+        (u_id, fname, lname, uname, s_id, u_role);
+END
