@@ -56,6 +56,7 @@ async function importUsers(filename){
         
     }
 }
+newConnection('adminuser','hostname','americandream','adminpass');
 importUsers('./data/members.psv');
 function termconn(){
     CLIENT.end();
