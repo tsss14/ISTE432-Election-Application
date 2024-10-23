@@ -45,12 +45,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Initiative" (
   initVotesAllowed INT,
   positiveVotes INT,
   negativeVotes INT,
-  neutralVotes INT,
-  CONSTRAINT Initiative_Election_fk
-    FOREIGN KEY (election_id)
-    REFERENCES americanDreamDB."Election" (election_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  neutralVotes INT
 );
 
 -- -----------------------------------------------------
@@ -60,12 +55,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Office" (
   office_id SERIAL PRIMARY KEY,
   election_id INT NOT NULL,
   officeName VARCHAR(45),
-  officeVotesAllowed INT,
-  CONSTRAINT Office_Election_fk
-    FOREIGN KEY (election_id)
-    REFERENCES americanDreamDB."Election" (election_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  officeVotesAllowed INT
 );
 
 -- -----------------------------------------------------
@@ -78,12 +68,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Candidate" (
   subtitle VARCHAR(45),
   description TEXT,
   imagePath VARCHAR(45),
-  positiveVotes INT,
-  CONSTRAINT Candidate_Office_fk
-    FOREIGN KEY (office_id)
-    REFERENCES americanDreamDB."Office" (office_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  positiveVotes INT
 );
 
 -- -----------------------------------------------------
@@ -98,12 +83,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."User" (
   society_id INT,
   role VARCHAR(45),
   password VARCHAR(45),
-  hasVoted BOOLEAN,
-  CONSTRAINT User_Society_fk
-    FOREIGN KEY (society_id)
-    REFERENCES americanDreamDB."Society" (society_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  hasVoted BOOLEAN
 );
 
 -- -----------------------------------------------------
@@ -112,17 +92,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."User" (
 CREATE TABLE IF NOT EXISTS americanDreamDB."Assignment" (
   user_id INT NOT NULL,
   society_id INT NOT NULL,
-  PRIMARY KEY (user_id, society_id),
-  CONSTRAINT Assignment_User_fk
-    FOREIGN KEY (user_id)
-    REFERENCES americanDreamDB."User" (user_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT Assignment_Society_fk
-    FOREIGN KEY (society_id)
-    REFERENCES americanDreamDB."Society" (society_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  PRIMARY KEY (user_id, society_id)
 );
 
 -- -----------------------------------------------------
@@ -132,6 +102,51 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."System" (
   queryTime INT,
   httpTime INT
 );
+
+-- -----------------------------------------------------
+-- Add Foreign Key Constraints
+-- -----------------------------------------------------
+ALTER TABLE americanDreamDB."Initiative"
+  ADD CONSTRAINT Initiative_Election_fk
+  FOREIGN KEY (election_id)
+  REFERENCES americanDreamDB."Election" (election_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE americanDreamDB."Office"
+  ADD CONSTRAINT Office_Election_fk
+  FOREIGN KEY (election_id)
+  REFERENCES americanDreamDB."Election" (election_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE americanDreamDB."Candidate"
+  ADD CONSTRAINT Candidate_Office_fk
+  FOREIGN KEY (office_id)
+  REFERENCES americanDreamDB."Office" (office_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE americanDreamDB."User"
+  ADD CONSTRAINT User_Society_fk
+  FOREIGN KEY (society_id)
+  REFERENCES americanDreamDB."Society" (society_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE americanDreamDB."Assignment"
+  ADD CONSTRAINT Assignment_User_fk
+  FOREIGN KEY (user_id)
+  REFERENCES americanDreamDB."User" (user_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE americanDreamDB."Assignment"
+  ADD CONSTRAINT Assignment_Society_fk
+  FOREIGN KEY (society_id)
+  REFERENCES americanDreamDB."Society" (society_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
 
 -- -----------------------------------------------------
 -- Insert Test Users 1, 2, 3, 4
