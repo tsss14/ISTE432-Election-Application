@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Society" (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."Initiative" (
   initiative_id SERIAL PRIMARY KEY,
-  election_id INT NOT NULL,
+  election_id INT NOT NULL UNIQUE,  -- Ensure election_id is unique
   initName VARCHAR(45),
   subtitle VARCHAR(45),
   description TEXT,
@@ -54,12 +54,17 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Initiative" (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."Candidate" (
   candidate_id SERIAL PRIMARY KEY,
-  office_id INT NOT NULL,
+  office_id INT NOT NULL,  -- Should reference a unique office_id in the Office table
   candidateName VARCHAR(45),
   subtitle VARCHAR(45),
   description TEXT,
   imagePath VARCHAR(45),
-  positiveVotes INT
+  positiveVotes INT,
+  CONSTRAINT Candidate_Office_fk
+    FOREIGN KEY (office_id)
+    REFERENCES americanDreamDB."Office" (office_id)  -- Create relationship with Office
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
 
 -- -----------------------------------------------------
@@ -70,9 +75,9 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Office" (
   election_id INT NOT NULL,
   officeName VARCHAR(45),
   officeVotesAllowed INT,
-  CONSTRAINT Office_Candidate_fk
-    FOREIGN KEY (office_id)
-    REFERENCES americanDreamDB."Candidate" (office_id)
+  CONSTRAINT Office_Election_fk
+    FOREIGN KEY (election_id)
+    REFERENCES americanDreamDB."Election" (election_id)  -- This needs to be created later
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
@@ -88,12 +93,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Election" (
   ballotCount INT,
   activity BOOLEAN,
   startsAt DATE,
-  endsAt DATE,
-  CONSTRAINT Election_Initiative_fk
-    FOREIGN KEY (election_id)
-    REFERENCES americanDreamDB."Initiative" (election_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  endsAt DATE
 );
 
 -- -----------------------------------------------------
