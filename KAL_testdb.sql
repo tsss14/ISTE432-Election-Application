@@ -9,21 +9,6 @@
 CREATE SCHEMA IF NOT EXISTS americanDreamDB;
 
 -- -----------------------------------------------------
--- Table americanDreamDB.User
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS americanDreamDB."User" (
-  user_id SERIAL PRIMARY KEY,
-  first_name VARCHAR(45),
-  last_name VARCHAR(45),
-  username VARCHAR(45),
-  phone VARCHAR(45),
-  society_id INT,
-  role VARCHAR(45),
-  password VARCHAR(45),
-  hasVoted BOOLEAN
-);
-
--- -----------------------------------------------------
 -- Table americanDreamDB.Society
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."Society" (
@@ -31,6 +16,20 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Society" (
   name VARCHAR(45),
   memberCount INT,
   avgVote DOUBLE PRECISION
+);
+
+-- -----------------------------------------------------
+-- Table americanDreamDB.Election
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS americanDreamDB."Election" (
+  election_id SERIAL PRIMARY KEY,
+  society_id INT NOT NULL,
+  name VARCHAR(45),
+  totalVotes INT,
+  ballotCount INT,
+  activity BOOLEAN,
+  startsAt DATE,
+  endsAt DATE
 );
 
 -- -----------------------------------------------------
@@ -46,23 +45,10 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Initiative" (
   initVotesAllowed INT,
   positiveVotes INT,
   negativeVotes INT,
-  neutralVotes INT
-);
-
--- -----------------------------------------------------
--- Table americanDreamDB.Candidate
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS americanDreamDB."Candidate" (
-  candidate_id SERIAL PRIMARY KEY,
-  office_id INT NOT NULL,  -- Should reference a unique office_id in the Office table
-  candidateName VARCHAR(45),
-  subtitle VARCHAR(45),
-  description TEXT,
-  imagePath VARCHAR(45),
-  positiveVotes INT,
-  CONSTRAINT Candidate_Office_fk
-    FOREIGN KEY (office_id)
-    REFERENCES americanDreamDB."Office" (office_id)  -- Create relationship with Office
+  neutralVotes INT,
+  CONSTRAINT Initiative_Election_fk
+    FOREIGN KEY (election_id)
+    REFERENCES americanDreamDB."Election" (election_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
@@ -77,23 +63,47 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Office" (
   officeVotesAllowed INT,
   CONSTRAINT Office_Election_fk
     FOREIGN KEY (election_id)
-    REFERENCES americanDreamDB."Election" (election_id)  -- This needs to be created later
+    REFERENCES americanDreamDB."Election" (election_id)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
 
 -- -----------------------------------------------------
--- Table americanDreamDB.Election
+-- Table americanDreamDB.Candidate
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS americanDreamDB."Election" (
-  election_id SERIAL PRIMARY KEY,
-  society_id INT NOT NULL,
-  name VARCHAR(45),
-  totalVotes INT,
-  ballotCount INT,
-  activity BOOLEAN,
-  startsAt DATE,
-  endsAt DATE
+CREATE TABLE IF NOT EXISTS americanDreamDB."Candidate" (
+  candidate_id SERIAL PRIMARY KEY,
+  office_id INT NOT NULL,
+  candidateName VARCHAR(45),
+  subtitle VARCHAR(45),
+  description TEXT,
+  imagePath VARCHAR(45),
+  positiveVotes INT,
+  CONSTRAINT Candidate_Office_fk
+    FOREIGN KEY (office_id)
+    REFERENCES americanDreamDB."Office" (office_id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Table americanDreamDB.User
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS americanDreamDB."User" (
+  user_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(45),
+  last_name VARCHAR(45),
+  username VARCHAR(45),
+  phone VARCHAR(45),
+  society_id INT,
+  role VARCHAR(45),
+  password VARCHAR(45),
+  hasVoted BOOLEAN,
+  CONSTRAINT User_Society_fk
+    FOREIGN KEY (society_id)
+    REFERENCES americanDreamDB."Society" (society_id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );
 
 -- -----------------------------------------------------
