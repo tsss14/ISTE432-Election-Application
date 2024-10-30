@@ -6,7 +6,7 @@ CREATE TABLE americanDreamDB."StagingData" (
 );
 
 COPY americanDreamDB."StagingData" ("member_id", "election_id", "office_id", "candidate_id")
-FROM '/path/to/your/data.txt'
+FROM '/home/students/Downloads/election_data/votes.psv'
 DELIMITER '|'
 CSV HEADER;
 
