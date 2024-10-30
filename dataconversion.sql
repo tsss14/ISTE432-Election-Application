@@ -6,7 +6,7 @@ CREATE TABLE americanDreamDB."StagingData" (
 );
 
 COPY americanDreamDB."StagingData" ("member_id", "election_id", "office_id", "candidate_id")
-FROM '/home/students/Downloads/election_data/votes.psv'
+FROM '/home/student/Downloads/election_data/votes.psv'
 DELIMITER '|'
 CSV HEADER;
 
