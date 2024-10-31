@@ -5,7 +5,6 @@ CREATE OR REPLACE FUNCTION get_user_login(
 RETURNS TABLE (
     user_id INT,
     name VARCHAR,
-    email VARCHAR,
     phone VARCHAR,
     role VARCHAR,
     hasVoted BOOLEAN
@@ -13,31 +12,16 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
     SELECT 
-        user_id,
-        name,
-        email,
-        phone,
-        role,
-        hasVoted
+        "User".user_id,
+        "User".first_name,
+        "User".phone,
+        "User".role,
+        "User"."hasVoted"
     FROM 
-        americanDream."User"
+        americandreamdb."User"
     WHERE 
         username = p_username 
         AND password = p_password;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION add_user(
-    u_id INT,
-    fname VARCHAR,
-    lname VARCHAR,
-    uname VARCHAR,
-    s_id INT,
-    u_role VARCHAR
-)
-START 
-    INSERT INTO americanDreamDB."User"
-        (user_id, first_name, last_name, username, society_id, role)
-    VALUES
-        (u_id, fname, lname, uname, s_id, u_role);
-END

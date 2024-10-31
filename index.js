@@ -1,6 +1,6 @@
 const app = require('express')();
-require('./businessLayer');
-const port = 8080;
+const {validateLogin} = require('./businessLayer.js');
+const port = 3000;
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -8,15 +8,16 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/login/:username/:password", (req, res) => {
-        const returnVal = validateLogin(req.params.password)
+app.get("/login/:username/:password", async function(req, res) {
+        const returnVal = await validateLogin(req.params.username, req.params.password);
         if(returnVal === "") {
             return res.status(400).send("Bad password...");
         }
-        return res.status(200).send(returnVal);
+        console.log(returnVal);
+        return res.status(200).json(returnVal);
 });
 
 app.listen(
     port,
-    () => {console.log(`API alive at http://localhost:${port}`)}
+    () => {console.log(`API alive at http://localhost:3000`)}
 );

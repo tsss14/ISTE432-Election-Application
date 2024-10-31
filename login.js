@@ -17,10 +17,11 @@ function init() {
       </form>');
     $('form').last().addClass('position-absolute top-50 start-50 translate-middle align-middle');
 
-    $("button").first().click(function() {
-      fetch(`http://localhost:8080/login/${$("#InputUsername").val()}/${$("#InputPassword").val()}`)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
+    $("button").first().click(async function() {
+      const res = await fetch(`http://localhost:3000/login/${$("#InputUsername").val()}/${$("#InputPassword").val()}`);
+  	const resJSON = await res.json();
+  	console.log(resJSON[0]);
+      //.then((json) => console.log(json));
     });
 }
 $(document).ready(init);
