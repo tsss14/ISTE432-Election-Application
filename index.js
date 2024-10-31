@@ -1,4 +1,5 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const {validateLogin} = require('./businessLayer.js');
 const port = 3000;
 
@@ -8,8 +9,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/login/:username/:password", async function(req, res) {
-        const returnVal = await validateLogin(req.params.username, req.params.password);
+app.use(express.json());
+
+app.post("/login", async function(req, res) {
+	console.log(req.body);
+	const uname = req.body.username;
+	const pwrd = req.body.password;
+        const returnVal = await validateLogin(uname, pwrd);
         if(returnVal === "") {
             return res.status(400).send("Bad password...");
         }
