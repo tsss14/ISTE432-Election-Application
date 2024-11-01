@@ -23,6 +23,8 @@ function init() {
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify({'password': `${$('#InputPassword').val()}`, 'username': `${$('#InputUsername').val()}`})
 	});
+	
+	console.log(await res.text());
   	//const resJSON = await res.json();
     });
 }

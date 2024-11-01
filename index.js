@@ -19,8 +19,7 @@ app.post("/login", async function(req, res) {
         if(returnVal === "") {
             return res.status(400).send("Bad password...");
         }
-        console.log(returnVal);
-        return res.status(200).json(returnVal);
+        return res.status(200).send(returnVal);
 });
 
 app.listen(

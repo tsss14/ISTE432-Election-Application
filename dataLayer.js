@@ -19,7 +19,16 @@ function newConnection(uname, hname, db, pwd,){ //given the proper string parama
 
 async function getUserData(uname, pwd) { 
     const res = await CLIENT.query('SELECT * FROM get_user_login($1, $2)', [uname, pwd])
-	return res.rows;
+	if(res.rows[0].name === uname) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+function insertSessionID(sessionID, role, timestamp) {
+	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${role}', '${timestamp}');`);
 }
 
 async function importUsers(filename){
@@ -47,4 +56,4 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {getUserData};
+module.exports = {getUserData, insertSessionID};
