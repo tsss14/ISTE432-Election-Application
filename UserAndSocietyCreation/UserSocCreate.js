@@ -26,7 +26,7 @@ function init() {
           <label for="phoneInp" class="form-label">Phone</label>\
           <input type="text" class="form-control" id="phoneInp">\
         </div>\
-        <button type="button" class="btn btn-primary">Submit</button>\
+        <button type="button" id="userCreateButton" class="btn btn-primary">Submit</button>\
       </form>');
     $('#pageCenter').append('<form>\
         <h2>New Society</h2>\
@@ -38,5 +38,11 @@ function init() {
       </form>');
     $('form').css('margin', '4vw');
     $('#pageCenter').last().addClass('position-absolute top-50 start-50 translate-middle align-middle d-flex');
+    $('#userCreateButton').on('click', async function() {
+      const res = fetch('http://localhost:3000/usrcreate', {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+		    body: JSON.stringify({'role': `${$('#roleInp').val()}`, 'username': `${$('#usernameInp').val()}`, 'fname': `${$('#firstNameInp').val()}`, 'lname': `${$('#lastnameInp').val()}`, 'phone': `${$('#phoneInp').val()}`}) 
+      });
 }
 $(document).ready(init);
