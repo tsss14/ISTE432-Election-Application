@@ -1,4 +1,4 @@
-const {getUserData, insertSessionID} = require('./dataLayer.js');
+const {getUserData, insertSessionID, addUser} = require('./dataLayer.js');
 const uuid = require('uuid');
 
 function generateSQLTimestamp() {

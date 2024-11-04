@@ -43,6 +43,6 @@ function init() {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
 		    body: JSON.stringify({'role': `${$('#roleInp').val()}`, 'username': `${$('#usernameInp').val()}`, 'fname': `${$('#firstNameInp').val()}`, 'lname': `${$('#lastnameInp').val()}`, 'phone': `${$('#phoneInp').val()}`}) 
-      });
+      });})
 }
 $(document).ready(init);
