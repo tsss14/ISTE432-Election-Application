@@ -26,4 +26,19 @@ async function validateLogin(username, password) {
     }
 }
 
-module.exports = { validateLogin };
+async function createUser(uname, role, fname, lname, phone) {
+    console.log("Attempting user creation...");
+    if(false) {
+        return "";
+    } else {
+        console.log("Acceptable field values... Querying database...")
+        const userAdded = await addUser(uname, role, fname, lname, phone);
+        if(userAdded) {
+        	return true;
+        } else {
+        	return "";
+        }
+    }
+}
+
+module.exports = { validateLogin, createUser };
