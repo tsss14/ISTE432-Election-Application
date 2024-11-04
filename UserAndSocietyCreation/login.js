@@ -3,18 +3,40 @@ function init() {
     const placeholderName = "placeholder name";
     $(document.body).append(header);
     $(header).addClass("text-bg-primary p-3").text("Welcome!");
-    $(document.body).append('<form>\
-        <h2>Log-in</h2>\
+    $(document.body).append('<div id="pageCenter">');
+    $('#pageCenter').append('<form>\
+        <h2>New User</h2>\
         <div class="mb-3">\
-          <label for="exampleInputEmail1" class="form-label">Email address</label>\
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">\
+          <label for="usernameInp" class="form-label">Username</label>\
+          <input type="text" class="form-control" id="usernameInp">\
         </div>\
         <div class="mb-3">\
-          <label for="exampleInputPassword1" class="form-label">Password</label>\
-          <input type="password" class="form-control" id="exampleInputPassword1">\
+          <label for="roleInp" class="form-label">Role</label>\
+          <input type="text" class="form-control" id="roleInp">\
         </div>\
-        <button type="submit" class="btn btn-primary">Submit</button>\
+        <div class="mb-3">\
+          <label for="firstNameInp" class="form-label">First Name</label>\
+          <input type="text" class="form-control" id="firstNameInp">\
+        </div>\
+        <div class="mb-3">\
+          <label for="lastnameInp" class="form-label">Last Name</label>\
+          <input type="text" class="form-control" id="lastnameInp">\
+        </div>\
+        <div class="mb-3">\
+          <label for="phoneInp" class="form-label">Phone</label>\
+          <input type="text" class="form-control" id="phoneInp">\
+        </div>\
+        <button type="button" class="btn btn-primary">Submit</button>\
       </form>');
-    $('form').last().addClass('position-absolute top-50 start-50 translate-middle align-middle')
+    $('#pageCenter').append('<form>\
+        <h2>New Society</h2>\
+        <div class="mb-3">\
+          <label for="societyNameInp" class="form-label">Society Name</label>\
+          <input type="text" class="form-control" id="societyNameInp">\
+        </div>\
+        <button type="button" class="btn btn-primary">Submit</button>\
+      </form>');
+    $('form').css('margin', '4vw');
+    $('#pageCenter').last().addClass('position-absolute top-50 start-50 translate-middle align-middle d-flex');
 }
 $(document).ready(init);
