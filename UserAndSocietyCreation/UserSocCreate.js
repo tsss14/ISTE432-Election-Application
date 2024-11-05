@@ -34,15 +34,36 @@ function init() {
           <label for="societyNameInp" class="form-label">Society Name</label>\
           <input type="text" class="form-control" id="societyNameInp">\
         </div>\
-        <button type="button" class="btn btn-primary">Submit</button>\
+        <button type="button" id="societyCreateButton" class="btn btn-primary">Submit</button>\
       </form>');
     $('form').css('margin', '4vw');
     $('#pageCenter').last().addClass('position-absolute top-50 start-50 translate-middle align-middle d-flex');
     $('#userCreateButton').on('click', async function() {
-      const res = fetch('http://localhost:3000/usrcreate', {
+      const res = await fetch('http://localhost:3000/usrcreate', {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
 		    body: JSON.stringify({'role': `${$('#roleInp').val()}`, 'username': `${$('#usernameInp').val()}`, 'fname': `${$('#firstNameInp').val()}`, 'lname': `${$('#lastnameInp').val()}`, 'phone': `${$('#phoneInp').val()}`}) 
-      });})
+      });
+      if(await res.text() !== "Bad user info...") {
+	$("#pageCenter").append('<p>added user succesfully</p>')
+      }else {
+      	$("#pageCenter").append('<p>failed to add user</p>')
+      }
+	});
+	
+    $('#societyCreateButton').on('click', async function() {
+    	const res = await fetch('http://localhost:3000/soccreate', 
+    	{
+        	method: "POST",
+        	headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({'societyName': `${$('#societyNameInp').val()}`})
+	});
+	if(await res.text() !== "Bad society name...") {
+		$("#pageCenter").append('<p>added society succesfully</p>')
+      	} else {
+      		$("#pageCenter").append('<p>failed to add society</p>')
+      	}
+      
+    });
 }
 $(document).ready(init);

@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createUser} = require('./businessLayer.js');
+const {validateLogin, createUser, createSociety } = require('./businessLayer.js');
 const port = 3000;
 
 app.use((req, res, next) => {
@@ -32,6 +32,16 @@ app.post("/usrcreate", async function(req, res) {
         const returnVal = await createUser(uname, role, fname, lname, phone);
         if(returnVal === "") {
             return res.status(400).send("Bad user info...");
+        }
+        return res.status(200).send(returnVal);
+});
+
+app.post("/soccreate", async function(req, res) {
+	console.log(req.body);
+	const socName = req.body.societyName;
+        const returnVal = await createSociety(socName);
+        if(returnVal === "") {
+            return res.status(400).send("Bad society name...");
         }
         return res.status(200).send(returnVal);
 });

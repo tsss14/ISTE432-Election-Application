@@ -32,6 +32,11 @@ async function addUser(uname, role, fname, lname, phone) {
 	return res;
 }
 
+async function addSociety(name) { 
+    const res = await CLIENT.query(`insert into americandreamdb."Society" (name) values ('${name}');`);
+	return res;
+}
+
 function insertSessionID(sessionID, role, timestamp) {
 	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${role}', '${timestamp}');`);
 }
@@ -61,4 +66,4 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {getUserData, insertSessionID, addUser};
+module.exports = {getUserData, insertSessionID, addUser, addSociety};

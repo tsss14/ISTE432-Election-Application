@@ -1,4 +1,4 @@
-const {getUserData, insertSessionID, addUser} = require('./dataLayer.js');
+const {getUserData, insertSessionID, addUser, addSociety } = require('./dataLayer.js');
 const uuid = require('uuid');
 
 function generateSQLTimestamp() {
@@ -7,6 +7,10 @@ function generateSQLTimestamp() {
 	const formattedTimestamp = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
 	console.log("Generated timestamp: " + formattedTimestamp);
 	return formattedTimestamp;
+}
+
+function checkInput(input) {
+	return !/^\w+$/.test(input);
 }
 
 async function validateLogin(username, password) {
@@ -28,7 +32,12 @@ async function validateLogin(username, password) {
 
 async function createUser(uname, role, fname, lname, phone) {
     console.log("Attempting user creation...");
-    if(false) {
+    if(checkInput(uname) &&
+    	checkInput(role) &&
+    	checkInput(fname) &&
+    	checkInput(lname) &&
+    	checkInput(phone)
+    ) {
         return "";
     } else {
         console.log("Acceptable field values... Querying database...")
@@ -41,4 +50,21 @@ async function createUser(uname, role, fname, lname, phone) {
     }
 }
 
-module.exports = { validateLogin, createUser };
+async function createSociety(socName) {
+    console.log("Attempting society creation...");
+    if(checkInput(socName)) {
+    	console.log(checkInput(socName))
+        return "";
+    } else {
+    	console.log(checkInput(socName))
+        console.log("Acceptable field values... Querying database...")
+        const socAdded = await addSociety(socName);
+        if(socAdded) {
+        	return true;
+        } else {
+        	return "";
+        }
+    }
+}
+
+module.exports = { validateLogin, createUser, createSociety };
