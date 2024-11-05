@@ -4,7 +4,7 @@ function init() {
     $(document.body).append(header);
     $(header).addClass("text-bg-primary p-3").text("Welcome!");
     $(document.body).append('<form>\
-        <h2>Log-in</h2>\
+        <h2>Previous Elections</h2>\
         <div class="mb-3">\
           <label for="exampleInputEmail1" class="form-label">Email address</label>\
           <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">\

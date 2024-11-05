@@ -1,7 +1,7 @@
-const {getUserData, insertSessionID, addUser} = require('./dataLayer.js');
+const {getUserData, insertSessionID, addUser, getElections} = require('./dataLayer.js');
 const uuid = require('uuid');
 
-function generateSQLTimestamp() {
+function generateSQLTimestamp() { 
 	const timestamp = Date.now();
 	const date = new Date(timestamp);
 	const formattedTimestamp = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
@@ -39,6 +39,17 @@ async function createUser(uname, role, fname, lname, phone) {
         	return "";
         }
     }
+}
+
+async function callElections() {
+    console.log("fetching elections");
+    result =  getElections();
+    console.log(result);
+
+    for (election in result){
+        //looking into best way to format data to pass to pastElections.js
+    }
+
 }
 
 module.exports = { validateLogin, createUser };
