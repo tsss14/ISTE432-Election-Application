@@ -1,8 +1,17 @@
-function init() {
+const { Button } = require("bootstrap");
+
+async function dataLoad() {
+  const data = await fetch('http://localhost:3000/pastElections');
+  return data;
+} 
+
+async function init() {
     const header = $('<div>');
     const placeholderName = "placeholder name";
-    var jsonData = {};
-    var data = JSON.parse(jsonData);
+    const data = await dataLoad().json();
+    console.log(data);
+
+    
     $(document.body).append(header);
     $(header).addClass("text-bg-primary p-3").text("Welcome!");
     $(document.body).append('<form>\
@@ -18,7 +27,10 @@ function init() {
         <button type="submit" class="btn btn-primary">Submit</button>\
       </form>');
     $('form').last().addClass('position-absolute top-50 start-50 translate-middle align-middle')
-}
+    $('button').last().on('click',async function() {
+      fetch('http://localhost:3000/pastElections')
+    } )
+  }
 
 data.forEach(election => {
   const elecDiv = document.createElement('div');

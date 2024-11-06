@@ -37,7 +37,7 @@ function insertSessionID(sessionID, role, timestamp) {
 }
 
 async function getElections(){
-    const res = await CLIENT.query(`SELCECT * FROM americandream.election`);
+    const res = await CLIENT.query(`SELCECT name, endsAT FROM americandream.election`);
     return res;
 }
 

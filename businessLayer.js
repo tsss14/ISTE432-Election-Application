@@ -43,13 +43,9 @@ async function createUser(uname, role, fname, lname, phone) {
 
 async function callElections() {
     console.log("fetching elections");
-    result =  getElections();
+    result =  await getElections();
     console.log(result);
-
-    for (election in result){
-        //looking into best way to format data to pass to pastElections.js
-    }
-
+    return JSON.parse(result);
 }
 
 module.exports = { validateLogin, createUser };
