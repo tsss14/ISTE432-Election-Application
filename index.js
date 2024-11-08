@@ -46,6 +46,22 @@ app.post("/soccreate", async function(req, res) {
         return res.status(200).send(returnVal);
 });
 
+app.post("/ballotcreate", async function(req, res) {
+	console.log(req.body);
+	const socName = req.body.societyName;
+	const elecName = req.body.electionName;
+	const cndts = req.body.candidates;
+	const inits = req.body.initiatives;
+	const start = req.body.start;
+	const durr = req.body.duration;
+	const desc = req.body.description;
+        const returnVal = await createBallot(socName, elecName, cndts, inits, start, durr, desc);
+        if(returnVal === "") {
+            return res.status(400).send("Bad ballot info...");
+        }
+        return res.status(200).send(returnVal);
+});
+
 app.listen(
     port,
     () => {console.log(`API alive at http://localhost:3000`)}
