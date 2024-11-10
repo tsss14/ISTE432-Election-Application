@@ -1,4 +1,4 @@
-const {getUserData, insertSessionID, addUser, getElections} = require('./dataLayer.js');
+const {getUserData, insertSessionID, addUser, getElections, getElection} = require('./dataLayer.js');
 const uuid = require('uuid');
 
 function generateSQLTimestamp() { 
@@ -45,6 +45,12 @@ async function callElections() {
     console.log("fetching elections");
     result =  await getElections();
     console.log(result);
+    return JSON.parse(result);
+}
+
+async function callElection() {
+    console.log("fetching Election data");
+    result = await getElection();
     return JSON.parse(result);
 }
 

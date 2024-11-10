@@ -15,7 +15,7 @@ async function init() {
     $(document.body).append(header);
     $(header).addClass("text-bg-primary p-3").text("Welcome!");
     $(document.body).append(`<form>\
-        <h2>Previous Elections</h2>`)
+        <h2>Previous Elections</h2>`);
 
         data.forEach(election => {
           const elecDiv = document.createElement('div');

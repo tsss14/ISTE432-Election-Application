@@ -41,6 +41,11 @@ async function getElections(){
     return res;
 }
 
+async function getElection(){
+    const res = await CLIENT.query(`SELCECT * FROM americandream.election`);
+    return res;
+}
+
 async function importUsers(filename){
     const data = fs.readFileSync(filename, 'utf8');
     const lines = data.split('\n');
