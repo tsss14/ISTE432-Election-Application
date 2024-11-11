@@ -1,7 +1,7 @@
-const {getUserData, insertSessionID, addUser, addSociety } = require('./dataLayer.js');
+const {getUserData, insertSessionID, addUser, addSociety, getElections, getElection } = require('./dataLayer.js');
 const uuid = require('uuid');
 
-function generateSQLTimestamp() {
+function generateSQLTimestamp() { 
 	const timestamp = Date.now();
 	const date = new Date(timestamp);
 	const formattedTimestamp = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
@@ -50,6 +50,17 @@ async function createUser(uname, role, fname, lname, phone) {
     }
 }
 
+  async function callElections() {
+    console.log("fetching elections");
+    result =  await getElections();
+    console.log(result);
+    return JSON.parse(result);
+}
+
+async function callElection() {
+    console.log("fetching Election data");
+    result = await getElection();
+  
 async function createSociety(socName) {
     console.log("Attempting society creation...");
     if(checkInput(socName)) {
@@ -63,7 +74,6 @@ async function createSociety(socName) {
         	return "";
         }
     }
-}
 
 async function createBallot(socName, elecName, cndts, inits, start, durr, desc) {
     console.log("Attempting ballot creation...");
@@ -88,4 +98,4 @@ async function createBallot(socName, elecName, cndts, inits, start, durr, desc) 
     }
 }
 
-module.exports = { validateLogin, createUser, createSociety, createBallot };
+module.exports = { validateLogin, createUser, createSociety, createBallot, callElection, callElections };

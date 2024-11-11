@@ -1,5 +1,5 @@
 const { Client } = require('pg');
-const fs = require('fs'); //file system module
+const fs = require('fs'); //file system module 
 
 let CLIENT;
 
@@ -18,7 +18,7 @@ function newConnection(uname, hname, db, pwd,){ //given the proper string parama
 
 
 async function getUserData(uname, pwd) { 
-    const res = await CLIENT.query('SELECT * FROM get_user_login($1, $2)', [uname, pwd])
+    const res = await CLIENT.query('SELECT * FROM get_user_login($1, $2)', [uname, pwd]);
 	if(res.rows[0].name === uname) {
 		return true;
 	}
@@ -56,6 +56,16 @@ async function addInitiative(name, desc, election_id) {
 
 function insertSessionID(sessionID, role, timestamp) {
 	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${role}', '${timestamp}');`);
+}
+
+async function getElections(){
+    const res = await CLIENT.query(`SELCECT name, endsAT FROM americandream.election`);
+    return res;
+}
+
+async function getElection(){
+    const res = await CLIENT.query(`SELCECT * FROM americandream.election`);
+    return res;
 }
 
 async function importUsers(filename){

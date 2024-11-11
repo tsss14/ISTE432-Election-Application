@@ -36,6 +36,15 @@ app.post("/usrcreate", async function(req, res) {
         return res.status(200).send(returnVal);
 });
 
+app.get("/pastElections", async function(req, res) {
+
+        const returnVal = await callElections();
+        if(returnVal === "") {
+            return res.status(400).send("Bad user info...");
+        }
+        return res.status(200).send(returnVal);
+});
+          
 app.post("/soccreate", async function(req, res) {
 	console.log(req.body);
 	const socName = req.body.societyName;
@@ -44,6 +53,15 @@ app.post("/soccreate", async function(req, res) {
             return res.status(400).send("Bad society name...");
         }
         return res.status(200).send(returnVal);
+});
+
+app.get("/ElectionView", async function(req, res) {
+
+    const returnVal = await callElection();
+    if(returnVal === "") {
+        return res.status(400).send("Bad user info...");
+    }
+    return res.status(200).send(returnVal);
 });
 
 app.post("/ballotcreate", async function(req, res) {
