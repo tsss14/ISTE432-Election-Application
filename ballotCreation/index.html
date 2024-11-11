@@ -3,12 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="login.js"></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
-    <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
-    <title>Document</title>
+    <title>Ballot Creation - American Dream</title>
 </head>
 <body>
+    <form id="createBallotForm">
+        <label for="societyName">Society Name:</label>
+        <input type="text" id="societyName">
+        <label for="electionName">Election Name:</label>
+        <input type="text" id="electionName"><br/>
+        <label for="candidateName">Candidate Name:</label>
+        <input type="text" id="candidateName">
+        <label for="candidateOffice">Candidate Office:</label>
+        <input type="text" id="candidateOffice">
+        <label for="candidateDesc">Candidate Description:</label>
+        <input type="text" id="candidateDesc">
+        <label for="candidateImage">Candidate Image:</label>
+        <input type="file" id="candidateImage">
+        <button type="button">Add Candidate</button><br/>
+        <label for="InitiativeName">Initiative Name:</label>
+        <input type="text" id="InitiativeName">
+        <label for="InitiativeDesc">Initiative Description:</label>
+        <input type="text" id="InitiativeDesc">
+        <label for="InitiativeImage">Initiative Image:</label>
+        <input type="file" id="InitiativeImage">
+        <button type="button">Add Initiative</button><br/>
+        <button type="button">Create Ballot</button>
+    </form>
 </body>
 </html>

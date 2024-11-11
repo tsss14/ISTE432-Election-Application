@@ -32,6 +32,28 @@ async function addUser(uname, role, fname, lname, phone) {
 	return res;
 }
 
+async function addSociety(name) { 
+    const res = await CLIENT.query(`insert into americandreamdb."Society" (name) values ('${name}');`);
+	return res;
+}
+
+async function addBallot(name, society_name, startDate, endDate) { 
+	const societyID = CLIENT.query(`select society_id from americandreamdb."Society" where name = '${society_name}';`)
+    const res = await CLIENT.query(`insert into americandreamdb."Election" (society_id, name, totalVotes, ballotCount, startsAt, endsAt) values ('${societyID}', '${name}', 0, 0, '${startDate}', '${endDate}');`);
+	return res;
+}
+
+async function addCandidate(name, desc, officeName) {
+	const officeID = CLIENT.query(`select office_id from americandreamdb."Office" where officeName = '${officeName}';`)
+	const res = await CLIENT.query(`insert into americandreamdb."Candidate" (candidateName, description, office_id) values ('${name}', '${desc}', ${officeID});`);
+	return res;
+}
+
+async function addInitiative(name, desc, election_id) {
+	const res = await CLIENT.query(`insert into americandreamdb."Initiative" (election_id, initName, description) values (${election_id}, '${name}', '${desc}');`);
+	return res;
+}
+
 function insertSessionID(sessionID, role, timestamp) {
 	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${role}', '${timestamp}');`);
 }
@@ -71,4 +93,4 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {getUserData, insertSessionID, addUser};
+module.exports = {getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addInitiative};
