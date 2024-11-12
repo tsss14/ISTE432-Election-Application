@@ -1,4 +1,3 @@
-const { Button } = require("bootstrap");
 
 async function dataLoad() {
   const data = await fetch('http://localhost:3000/pastElections');
@@ -8,7 +7,8 @@ async function dataLoad() {
 async function init() {
     const header = $('<div>');
     const placeholderName = "placeholder name";
-    const data = await dataLoad().json();
+    const data = await dataLoad();
+    data.json();
     console.log(data);
 
     
@@ -34,6 +34,6 @@ async function init() {
         
           body.appendChild(elecDiv);
 });
-  }
+}
 
 $(document).ready(init);

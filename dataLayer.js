@@ -93,4 +93,4 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addInitiative};
+module.exports = {getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addInitiative, getElections, getElection};

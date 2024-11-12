@@ -1,4 +1,3 @@
-const { Button } = require("bootstrap");
 
 async function dataLoad() {
     const data = await fetch('http://localhost:3000/electionView');
@@ -8,7 +7,8 @@ async function dataLoad() {
 async function init() {
     const header = $('<div>');
     const placeholderName = "placeholder name";
-    const data = await dataLoad().json();
+    const data = await dataLoad();
+    data.json();
     console.log(data);
     
         
@@ -18,3 +18,5 @@ async function init() {
         <h2>Election Statistics</h2>`);
 
 }
+
+$(document).ready(init);

@@ -1,5 +1,5 @@
-const {getUserData, insertSessionID, addUser, addSociety, getElections, getElection } = require('./dataLayer.js');
-const uuid = require('uuid');
+import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection } from './dataLayer.js';
+import { v4 } from 'uuid';
 
 function generateSQLTimestamp() { 
 	const timestamp = Date.now();
@@ -21,7 +21,7 @@ async function validateLogin(username, password) {
         console.log("Acceptable password... Checking database...")
         const isValidLogin = await getUserData(username, password);
         if(isValidLogin) {
-        	const uid = uuid.v4();
+        	const uid = v4();
         	insertSessionID(uid, 'member', generateSQLTimestamp());
         	return uid;
         } else {
@@ -60,6 +60,7 @@ async function createUser(uname, role, fname, lname, phone) {
 async function callElection() {
     console.log("fetching Election data");
     result = await getElection();
+}
   
 async function createSociety(socName) {
     console.log("Attempting society creation...");
@@ -74,6 +75,7 @@ async function createSociety(socName) {
         	return "";
         }
     }
+}
 
 async function createBallot(socName, elecName, cndts, inits, start, durr, desc) {
     console.log("Attempting ballot creation...");
@@ -98,4 +100,10 @@ async function createBallot(socName, elecName, cndts, inits, start, durr, desc) 
     }
 }
 
-module.exports = { validateLogin, createUser, createSociety, createBallot, callElection, callElections };
+module.exports = { 
+    validateLogin,
+    createUser, 
+    createSociety, 
+    createBallot, 
+    callElection, 
+    callElections };
