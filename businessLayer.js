@@ -54,7 +54,7 @@ async function createUser(uname, role, fname, lname, phone) {
     console.log("fetching elections");
     result =  await getElections();
     console.log(result);
-    return JSON.parse(result);
+    return result;
 }
 
 async function callElection() {

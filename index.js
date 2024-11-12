@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createUser, createSociety } = require('./businessLayer.js');
+const {validateLogin, createUser, createSociety, callElections, callElection } = require('./businessLayer.js');
 const port = 3000;
 
 app.use((req, res, next) => {
@@ -39,6 +39,7 @@ app.post("/usrcreate", async function(req, res) {
 app.get("/pastElections", async function(req, res) {
 
         const returnVal = await callElections();
+        res.json(returnVal); 
         if(returnVal === "") {
             return res.status(400).send("Bad user info...");
         }

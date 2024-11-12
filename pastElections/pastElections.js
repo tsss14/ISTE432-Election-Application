@@ -1,7 +1,11 @@
 
 async function dataLoad() {
-  const data = await fetch('http://localhost:3000/pastElections');
-  return data;
+  const response = await fetch('http://localhost:3000/pastElections');
+  if(!response.ok) {
+    throw new Error('couldnt fetch data');
+  }
+  const data = await response.json();
+  console.log(data);
 } 
 
 async function init() {
