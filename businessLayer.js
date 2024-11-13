@@ -107,6 +107,34 @@ async function createBallot(socName, elecName, cndts, inits) {
     }
 }
 
+// ---------------------------------------------------------------- Luke Functions
+
+// Gets & consolidates system stats
+async function getSystemStats() {
+    const loggedInUsers = await getLoggedInUsers();
+    const activeElections = await getActiveElections();
+    const avgQueryTime = await getAvgQueryResponseTime();
+    const avgHttpTime = await getAvgHttpResponseTime();
+
+    return {
+        loggedInUsers,
+        activeElections,
+        avgQueryTime,
+        avgHttpTime
+    };
+}
+
+// Gets & consolidates all active election info by user
+async function getActiveElectionByUser(user_id) {
+    const election = await getActiveElection(user_id);
+    const offices = await getOffices(election.election_id);
+    const candidates = await getCandidates(offices.office_id);
+    const initiatives = await getInitiatives(election.election_id);
+    return {election, offices, candidates, initiatives};
+}
+
+// ----------------------------------------------------------------
+
 module.exports = { 
     validateLogin,
     createUser, 
@@ -114,4 +142,6 @@ module.exports = {
     createBallot, 
     callElection, 
     callPreviousElections,
-    callOngoingElections };
+    callOngoingElections,
+    getSystemStats,
+    getActiveElectionByUser };
