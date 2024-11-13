@@ -1,4 +1,4 @@
-import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection } from './dataLayer.js';
+import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate } from './dataLayer.js';
 import { v4 } from 'uuid';
 
 function generateSQLTimestamp() { 
@@ -77,21 +77,22 @@ async function createSociety(socName) {
     }
 }
 
-async function createBallot(socName, elecName, cndts, inits, start, durr, desc) {
+async function createBallot(socName, elecName, cndts, inits) {
     console.log("Attempting ballot creation...");
     if(checkInput(socName) ||
-    	checkInput(elecName) ||
-    	checkInput(cndts) ||
-    	checkInput(inits) ||
-        checkInput(start) ||
-        checkInput(durr) ||
-    	checkInput(desc)) {
+    	checkInput(elecName)) {
         return "";
     } else {
         console.log("Acceptable field values... Querying database...")
-	//Call a function multiple times to add each candidate and initiative
-	//Finally call a function to create the ballot itself 
-        //const ballotAdded = await addSociety(socName);
+        let start = generateSQLTimestamp();
+        addBallot(socName, elecName, start);
+        let elecID = getElectionID(elecName);
+        inits.forEach((init) => {
+            addInitiative(init.name, init.description, elecID);
+        });
+        cndts.forEach((cndt) => {
+            addCandidate(cndt.name, cndt.description, cndt.office);
+        });
         if(ballotAdded) {
         	return true;
         } else {

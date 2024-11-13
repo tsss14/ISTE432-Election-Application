@@ -37,10 +37,18 @@ async function addSociety(name) {
 	return res;
 }
 
-async function addBallot(name, society_name, startDate, endDate) { 
+async function addBallot(name, society_name, startDate) { 
 	const societyID = CLIENT.query(`select society_id from americandreamdb."Society" where name = '${society_name}';`)
     const res = await CLIENT.query(`insert into americandreamdb."Election" (society_id, name, totalVotes, ballotCount, startsAt, endsAt) values ('${societyID}', '${name}', 0, 0, '${startDate}', '${endDate}');`);
 	return res;
+}
+
+async function getElectionID(electionName) {
+    return await CLIENT.query(`select election_id from americandreamdb."Election" where name = '${electionName}';`);
+}
+
+async function addOffice() {
+    
 }
 
 async function addCandidate(name, desc, officeName) {
@@ -93,4 +101,4 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addInitiative, getElections, getElection};
+module.exports = {getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addInitiative, getElections, getElection, getElectionID};

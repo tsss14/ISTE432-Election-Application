@@ -71,9 +71,6 @@ app.post("/ballotcreate", async function(req, res) {
 	const elecName = req.body.electionName;
 	const cndts = req.body.candidates;
 	const inits = req.body.initiatives;
-	const start = req.body.start;
-	const durr = req.body.duration;
-	const desc = req.body.description;
         const returnVal = await createBallot(socName, elecName, cndts, inits, start, durr, desc);
         if(returnVal === "") {
             return res.status(400).send("Bad ballot info...");
