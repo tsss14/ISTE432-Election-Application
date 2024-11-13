@@ -117,6 +117,26 @@ app.get('/system-stats', async (req, res) => {
     }
 });
 
+// Gets current active election for logged in user
+app.get("/getActiveElection", async function(req, res) {
+    const user_id = req.body.user_id;  
+    const electionData = await getElectionData(user_id);
+    
+    if (!electionData) {
+        return res.status(404).send("No active election found.");
+    }
+
+    return res.status(200).json(electionData);
+});
+
+// Submits vote to the candidate/initiatives of choice
+app.post("/submitVote", async function(req, res) {
+    const { candidates, initiatives } = req.body;
+    // WIP
+    
+    return res.status(200).send("Vote successfully submitted.");
+});
+
 // ----------------------------------------------------------------
 
 app.listen(
