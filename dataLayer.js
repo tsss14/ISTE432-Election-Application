@@ -72,7 +72,7 @@ async function getPreviousElections(){
 }
 
 async function getOngoingElections(){
-    const res = await CLIENT.query(`SELCECT name, FROM americandream.election WHERE endsAT > NOW()`);
+    const res = await CLIENT.query(`SELCECT name, endsAT FROM americandream.election WHERE endsAT > NOW()`);
     return res;
 }
 

@@ -38,12 +38,22 @@ app.post("/usrcreate", async function(req, res) {
 
 app.get("/pastElections", async function(req, res) {
 
-        const returnVal = await callElections();
+        const returnVal = await callPreviousElections();
         res.json(returnVal); 
         if(returnVal === "") {
             return res.status(400).send("Bad user info...");
         }
         return res.status(200).send(returnVal);
+});
+
+app.get("/ongoingElections", async function(req, res) {
+
+    const returnVal = await callOngoingElections();
+    res.json(returnVal); 
+    if(returnVal === "") {
+        return res.status(400).send("Bad user info...");
+    }
+    return res.status(200).send(returnVal);
 });
           
 app.post("/soccreate", async function(req, res) {
