@@ -78,6 +78,47 @@ app.post("/ballotcreate", async function(req, res) {
         return res.status(200).send(returnVal);
 });
 
+// ---------------------------------------------------------------- Luke API calls
+
+// Gets active election for logged in user for ballot page
+app.get("/activeelectionget", async function(req, res) {
+    console.log(req.body);
+    const user_id = req.body.user_id;
+    const returnVal = await getActiveElectionByUser(user_id);
+    if(returnVal === "") {
+        return res.status(400).send("Bad user id...");
+    }
+    return res.status(200).send(returnVal);
+});
+
+// Track HTTP response times
+app.use((req, res, next) => {
+    const start = Date.now(); 
+    res.on('finish', () => {
+      const duration = Date.now() - start; 
+  
+      CLIENT.query(`
+        INSERT INTO americanDreamDB."System" ("queryTime", "httpTime")
+        VALUES ($1, $2)
+      `, [duration, res.statusCode]);
+    });
+    next();
+});
+  
+// Sends system stats to systemstats.js
+app.get('/system-stats', async (req, res) => {
+    try {
+        const stats = await getSystemStats();
+        
+        res.json(stats);
+    } catch (error) {
+        console.error('Error fetching system stats:', error);
+        res.status(500).json({ error: 'Failed to retrieve system stats.' });
+    }
+});
+
+// ----------------------------------------------------------------
+
 app.listen(
     port,
     () => {console.log(`API alive at http://localhost:3000`)}
