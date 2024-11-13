@@ -85,28 +85,31 @@ async function getElection(){
 
 // Gets current active election for logged in member
 async function getActiveElection(user_id) {
-	const societyID = await CLIENT.query(`select society_id from americandreamdb."Assignment" where user_id = ${user_id}`);
-    const currentDate = Date.now();
-    const election = await CLIENT.query(`select * from americandreamdb."Election" where society_id = ${societyID} and ${currentDate} between startsAt and endsAt`);
-	return election;
+    const societyID = await CLIENT.query(`SELECT society_id FROM americandreamdb."Assignment" WHERE user_id = $1`, [user_id]);
+    const currentDate = new Date();
+    const election = await CLIENT.query(`
+        SELECT * FROM americandreamdb."Election" 
+        WHERE society_id = $1 AND $2 BETWEEN startsAt AND endsAt`, [societyID, currentDate]);
+
+    return election.rows.length ? election.rows[0] : null;
 }
 
-// Gets offices based on election id
+// Gets the offices related to the election
 async function getOffices(election_id) {
-    const offices = await CLIENT.query(`select * from americandreamdb."Office" where election_id = ${election_id}`)
-    return offices;
+    const offices = await CLIENT.query(`SELECT * FROM americandreamdb."Office" WHERE election_id = $1`, [election_id]);
+    return offices.rows;
 }
 
-// Gets candidates based on office id
+// Gets the candidates for a specific office
 async function getCandidates(office_id) {
-    const candidates = await CLIENT.query(`select * from americandreamdb."Candidate" where office_id = ${office_id}`)
-    return candidates;
+    const candidates = await CLIENT.query(`SELECT * FROM americandreamdb."Candidate" WHERE office_id = $1`, [office_id]);
+    return candidates.rows;
 }
 
-// Gets initiatives based on election id
+// Gets the initiatives for the election
 async function getInitiatives(election_id) {
-    const initiatives = await CLIENT.query(`select * from americandreamdb."Initiative" where election_id = ${election_id}`)
-    return initiatives;
+    const initiatives = await CLIENT.query(`SELECT * FROM americandreamdb."Initiative" WHERE election_id = $1`, [election_id]);
+    return initiatives.rows;
 }
 
 // Insert session ID (for logged-in users)
