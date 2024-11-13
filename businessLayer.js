@@ -1,4 +1,4 @@
-import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate } from './dataLayer.js';
+import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives } from './dataLayer.js';
 import { v4 } from 'uuid';
 
 function generateSQLTimestamp() { 
@@ -133,6 +133,25 @@ async function getActiveElectionByUser(user_id) {
     return {election, offices, candidates, initiatives};
 }
 
+// Gets & consolidates all active election info by user (revision)
+async function getElectionData(user_id) {
+    const election = await getActiveElection(user_id);
+    if (!election) return null;
+
+    const offices = await getOffices(election.election_id);
+    const candidatesPromises = offices.map(office => getCandidates(office.office_id));
+    const candidates = await Promise.all(candidatesPromises);
+
+    const initiatives = await getInitiatives(election.election_id);
+
+    return {
+        election,
+        offices,
+        candidates: [].concat(...candidates),  
+        initiatives
+    };
+}
+
 // ----------------------------------------------------------------
 
 module.exports = { 
@@ -144,4 +163,6 @@ module.exports = {
     callPreviousElections,
     callOngoingElections,
     getSystemStats,
-    getActiveElectionByUser };
+    getActiveElectionByUser,
+    getElectionData
+    };
