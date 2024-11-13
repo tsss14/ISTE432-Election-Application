@@ -1,12 +1,24 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createUser, createSociety, callElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
+const {validateLogin, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
 const port = 3000;
+
+app.use(express.static('public'));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
+    // const start = Date.now(); This function need to be in this app.use, and the query should happen in the business layer
+    // res.on('finish', () => {
+    //    const duration = Date.now() - start; 
+  
+    //   CLIENT.query(`
+    //      INSERT INTO americanDreamDB."System" ("queryTime", "httpTime")
+    //      VALUES ($1, $2)
+    //    `, [duration, res.statusCode]);
+    // });
+    // next();
 });
 
 app.use(express.json());
@@ -38,12 +50,22 @@ app.post("/usrcreate", async function(req, res) {
 
 app.get("/pastElections", async function(req, res) {
 
-        const returnVal = await callElections();
+        const returnVal = await callPreviousElections();
         res.json(returnVal); 
         if(returnVal === "") {
             return res.status(400).send("Bad user info...");
         }
         return res.status(200).send(returnVal);
+});
+
+app.get("/ongoingElections", async function(req, res) {
+
+    const returnVal = await callOngoingElections();
+    res.json(returnVal); 
+    if(returnVal === "") {
+        return res.status(400).send("Bad user info...");
+    }
+    return res.status(200).send(returnVal);
 });
           
 app.post("/soccreate", async function(req, res) {
@@ -92,18 +114,18 @@ app.get("/activeelectionget", async function(req, res) {
 });
 
 // Track HTTP response times
-app.use((req, res, next) => {
-    const start = Date.now(); 
-    res.on('finish', () => {
-      const duration = Date.now() - start; 
+//app.use((req, res, next) => {
+//     const start = Date.now(); 
+//     res.on('finish', () => {
+//       const duration = Date.now() - start; 
   
-      CLIENT.query(`
-        INSERT INTO americanDreamDB."System" ("queryTime", "httpTime")
-        VALUES ($1, $2)
-      `, [duration, res.statusCode]);
-    });
-    next();
-});
+//       CLIENT.query(`
+//         INSERT INTO americanDreamDB."System" ("queryTime", "httpTime")
+//         VALUES ($1, $2)
+//       `, [duration, res.statusCode]);
+//     });
+//     next();
+// });
   
 // Sends system stats to systemstats.js
 app.get('/system-stats', async (req, res) => {

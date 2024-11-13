@@ -14,6 +14,7 @@ function newConnection(uname, hname, db, pwd,){ //given the proper string parama
     CLIENT.connect();
 }
 
+
     
 
 
@@ -67,17 +68,17 @@ function insertSessionID(sessionID, role, timestamp) {
 }
 
 async function getPreviousElections(){
-    const res = await CLIENT.query(`SELCECT name, endsAT FROM americandream.election < NOW()`);
+    const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" < NOW()`);
     return res;
 }
 
 async function getOngoingElections(){
-    const res = await CLIENT.query(`SELCECT name, FROM americandream.election WHERE endsAT > NOW()`);
+    const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
     return res;
 }
 
 async function getElection(){
-    const res = await CLIENT.query(`SELCECT * FROM americandream.election`);
+    const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election"`);
     return res;
 }
 
