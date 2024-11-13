@@ -66,8 +66,13 @@ function insertSessionID(sessionID, role, timestamp) {
 	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${role}', '${timestamp}');`);
 }
 
-async function getElections(){
-    const res = await CLIENT.query(`SELCECT name, endsAT FROM americandream.election`);
+async function getPreviousElections(){
+    const res = await CLIENT.query(`SELCECT name, endsAT FROM americandream.election < NOW()`);
+    return res;
+}
+
+async function getOngoingElections(){
+    const res = await CLIENT.query(`SELCECT name, FROM americandream.election WHERE endsAT > NOW()`);
     return res;
 }
 
@@ -101,4 +106,5 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addInitiative, getElections, getElection, getElectionID};
+module.exports = {  getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate,
+                    addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections};

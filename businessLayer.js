@@ -50,9 +50,15 @@ async function createUser(uname, role, fname, lname, phone) {
     }
 }
 
-  async function callElections() {
+async function callPreviousElections() {
     console.log("fetching elections");
-    result =  await getElections();
+    result =  await getPreviousElections();
+    console.log(result);
+    return result;
+}
+async function callOngoingElections() {
+    console.log("fetching elections");
+    result =  await getOngoingElections();
     console.log(result);
     return result;
 }
@@ -107,4 +113,5 @@ module.exports = {
     createSociety, 
     createBallot, 
     callElection, 
-    callElections };
+    callPreviousElections,
+    callOngoingElections };
