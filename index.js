@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createUser, createSociety, callElections, callElection } = require('./businessLayer.js');
+const {validateLogin, createUser, createSociety, callElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
 const port = 3000;
 
 app.use((req, res, next) => {
