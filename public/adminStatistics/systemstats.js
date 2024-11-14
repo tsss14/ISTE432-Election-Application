@@ -1,6 +1,6 @@
 async function loadStats() {
   try {
-      const response = await fetch('/system-stats'); 
+      const response = await fetch('http://localhost:3000/system-stats'); 
       if (!response.ok) {
           throw new Error("Failed to fetch system stats.");
       }
