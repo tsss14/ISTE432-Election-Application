@@ -40,7 +40,7 @@ async function addSociety(name) {
 
 async function addBallot(name, society_name, startDate) { 
 	const societyID = CLIENT.query(`select society_id from americandreamdb."Society" where name = '${society_name}';`)
-    const res = await CLIENT.query(`insert into americandreamdb."Election" (society_id, name, totalVotes, ballotCount, startsAt, endsAt) values ('${societyID}', '${name}', 0, 0, '${startDate}', '${endDate}');`);
+    const res = await CLIENT.query(`insert into americandreamdb."Election" (society_id, name, totalVotes, ballotCount, "startsAt", "endsAt") values ('${societyID}', '${name}', 0, 0, '${startDate}', '${endDate}');`);
 	return res;
 }
 
@@ -67,16 +67,19 @@ function insertSessionID(sessionID, role, timestamp) {
 	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${role}', '${timestamp}');`);
 }
 
+//gets PreviousElection data
 async function getPreviousElections(){
     const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" < NOW()`);
     return res;
 }
 
+//gets ongoingElections, will be used for AD employees and admins
 async function getOngoingElections(){
     const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
     return res;
 }
 
+//gets Election data, have to pass in election ID 
 async function getElection(){
     const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election"`);
     return res;

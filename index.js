@@ -9,7 +9,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-    // const start = Date.now(); This function need to be in this app.use, and the query should happen in the business layer
+    // const start = Date.now(); This function need to be in this app.use, but the query should happen in the business layer
     // res.on('finish', () => {
     //    const duration = Date.now() - start; 
   
