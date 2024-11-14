@@ -14,6 +14,7 @@ function newConnection(uname, hname, db, pwd,){ //given the proper string parama
     CLIENT.connect();
 }
 
+
     
 
 
@@ -67,19 +68,101 @@ function insertSessionID(sessionID, role, timestamp) {
 }
 
 async function getPreviousElections(){
-    const res = await CLIENT.query(`SELCECT name, endsAT FROM americandream.election < NOW()`);
+    const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" < NOW()`);
     return res;
 }
 
 async function getOngoingElections(){
-    const res = await CLIENT.query(`SELCECT name, endsAT FROM americandream.election WHERE endsAT > NOW()`);
+    const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
     return res;
 }
 
 async function getElection(){
-    const res = await CLIENT.query(`SELCECT * FROM americandream.election`);
+    const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election"`);
     return res;
 }
+
+// ---------------------------------------------------------------- Luke Functions
+
+// Gets current active election for logged in member
+async function getActiveElection(user_id) {
+    const societyID = await CLIENT.query(`SELECT society_id FROM americandreamdb."Assignment" WHERE user_id = $1`, [user_id]);
+    const currentDate = new Date();
+    const election = await CLIENT.query(`
+        SELECT * FROM americandreamdb."Election" 
+        WHERE society_id = $1 AND $2 BETWEEN startsAt AND endsAt`, [societyID, currentDate]);
+
+    return election.rows.length ? election.rows[0] : null;
+}
+
+// Gets the offices related to the election
+async function getOffices(election_id) {
+    const offices = await CLIENT.query(`SELECT * FROM americandreamdb."Office" WHERE election_id = $1`, [election_id]);
+    return offices.rows;
+}
+
+// Gets the candidates for a specific office
+async function getCandidates(office_id) {
+    const candidates = await CLIENT.query(`SELECT * FROM americandreamdb."Candidate" WHERE office_id = $1`, [office_id]);
+    return candidates.rows;
+}
+
+// Gets the initiatives for the election
+async function getInitiatives(election_id) {
+    const initiatives = await CLIENT.query(`SELECT * FROM americandreamdb."Initiative" WHERE election_id = $1`, [election_id]);
+    return initiatives.rows;
+}
+
+// Insert session ID (for logged-in users)
+function insertSessionID(sessionID, userID, role) {
+    const query = `
+      INSERT INTO americanDreamDB."Session" ("session_id", "user_id", "role", "timestamp")
+      VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
+    `;
+    CLIENT.query(query, [sessionID, userID, role]);
+}
+
+// Fetch currently logged-in users
+async function getActiveUsers() {
+    const res = await CLIENT.query('SELECT * FROM americanDreamDB."Session"');
+    return res.rows;  
+}
+
+// Fetch active elections
+async function getActiveElections() {
+    const currentDate = new Date().toISOString().split('T')[0];
+    const query = `
+      SELECT * FROM americanDreamDB."Election"
+      WHERE CURRENT_DATE BETWEEN "startsAt" AND "endsAt"
+    `;
+    const res = await CLIENT.query(query);
+    return res.rows;
+}
+  
+// Log query execution time
+async function logQueryTime(query, params) {
+    const start = Date.now(); 
+    const res = await CLIENT.query(query, params); 
+    const duration = Date.now() - start; 
+    
+    await CLIENT.query(`
+      INSERT INTO americanDreamDB."QueryLogs" ("query", "duration_ms")
+      VALUES ($1, $2)
+    `, [query, duration]);
+    
+    return res;
+}
+
+// Get average query response time
+async function getAvgQueryTime() {
+    const res = await CLIENT.query(`
+      SELECT AVG("duration_ms") AS avg_duration
+      FROM americanDreamDB."QueryLogs"
+    `);
+    return res.rows[0].avg_duration || 0; // Return 0 if no query logs are found
+  }
+  
+// ----------------------------------------------------------------
 
 async function importUsers(filename){
     const data = fs.readFileSync(filename, 'utf8');
@@ -107,4 +190,4 @@ function termconn(){
 }
 
 module.exports = {  getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate,
-                    addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections};
+                    addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime};

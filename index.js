@@ -1,12 +1,24 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createUser, createSociety, callElections, callElection } = require('./businessLayer.js');
+const {validateLogin, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
 const port = 3000;
+
+app.use(express.static('public'));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
+    // const start = Date.now(); This function need to be in this app.use, and the query should happen in the business layer
+    // res.on('finish', () => {
+    //    const duration = Date.now() - start; 
+  
+    //   CLIENT.query(`
+    //      INSERT INTO americanDreamDB."System" ("queryTime", "httpTime")
+    //      VALUES ($1, $2)
+    //    `, [duration, res.statusCode]);
+    // });
+    // next();
 });
 
 app.use(express.json());
@@ -87,6 +99,67 @@ app.post("/ballotcreate", async function(req, res) {
         }
         return res.status(200).send(returnVal);
 });
+
+// ---------------------------------------------------------------- Luke API calls
+
+// Gets active election for logged in user for ballot page
+app.get("/activeelectionget", async function(req, res) {
+    console.log(req.body);
+    const user_id = req.body.user_id;
+    const returnVal = await getActiveElectionByUser(user_id);
+    if(returnVal === "") {
+        return res.status(400).send("Bad user id...");
+    }
+    return res.status(200).send(returnVal);
+});
+
+// Track HTTP response times
+//app.use((req, res, next) => {
+//     const start = Date.now(); 
+//     res.on('finish', () => {
+//       const duration = Date.now() - start; 
+  
+//       CLIENT.query(`
+//         INSERT INTO americanDreamDB."System" ("queryTime", "httpTime")
+//         VALUES ($1, $2)
+//       `, [duration, res.statusCode]);
+//     });
+//     next();
+// });
+  
+// Sends system stats to systemstats.js
+app.get('/system-stats', async (req, res) => {
+    try {
+        const stats = await getSystemStats();
+        
+        res.json(stats);
+    } catch (error) {
+        console.error('Error fetching system stats:', error);
+        res.status(500).json({ error: 'Failed to retrieve system stats.' });
+    }
+});
+
+// Gets current active election for logged in user
+app.get("/getActiveElection", async function(req, res) {
+    const user_id = req.body.user_id;  
+    const electionData = await getElectionData(user_id);
+    
+    if (!electionData) {
+        return res.status(404).send("No active election found.");
+    }
+
+    return res.status(200).json(electionData);
+});
+
+// Submits vote to the candidate/initiatives of choice
+app.post("/submitVote", async function(req, res) {
+    const { candidates, initiatives } = req.body;
+    // WIP
+    
+    return res.status(200).send("Vote successfully submitted.");
+});
+
+// ----------------------------------------------------------------
 
 app.listen(
     port,

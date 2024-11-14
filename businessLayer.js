@@ -1,5 +1,7 @@
-import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate } from './dataLayer.js';
-import { v4 } from 'uuid';
+//import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives } from './dataLayer.js';
+//import { v4 } from 'uuid';
+const {getUserData, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives} = require('./dataLayer.js');
+
 
 function generateSQLTimestamp() { 
 	const timestamp = Date.now();
@@ -107,6 +109,53 @@ async function createBallot(socName, elecName, cndts, inits) {
     }
 }
 
+// ---------------------------------------------------------------- Luke Functions
+
+// Gets & consolidates system stats
+async function getSystemStats() {
+    const loggedInUsers = await getLoggedInUsers();
+    const activeElections = await getActiveElections();
+    const avgQueryTime = await getAvgQueryResponseTime();
+    const avgHttpTime = await getAvgHttpResponseTime();
+
+    return {
+        loggedInUsers,
+        activeElections,
+        avgQueryTime,
+        avgHttpTime
+    };
+}
+
+// Gets & consolidates all active election info by user
+async function getActiveElectionByUser(user_id) {
+    const election = await getActiveElection(user_id);
+    const offices = await getOffices(election.election_id);
+    const candidates = await getCandidates(offices.office_id);
+    const initiatives = await getInitiatives(election.election_id);
+    return {election, offices, candidates, initiatives};
+}
+
+// Gets & consolidates all active election info by user (revision)
+async function getElectionData(user_id) {
+    const election = await getActiveElection(user_id);
+    if (!election) return null;
+
+    const offices = await getOffices(election.election_id);
+    const candidatesPromises = offices.map(office => getCandidates(office.office_id));
+    const candidates = await Promise.all(candidatesPromises);
+
+    const initiatives = await getInitiatives(election.election_id);
+
+    return {
+        election,
+        offices,
+        candidates: [].concat(...candidates),  
+        initiatives
+    };
+}
+
+// ----------------------------------------------------------------
+
 module.exports = { 
     validateLogin,
     createUser, 
@@ -114,4 +163,8 @@ module.exports = {
     createBallot, 
     callElection, 
     callPreviousElections,
-    callOngoingElections };
+    callOngoingElections,
+    getSystemStats,
+    getActiveElectionByUser,
+    getElectionData
+    };

@@ -104,6 +104,26 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."System" (
 );
 
 -- -----------------------------------------------------
+-- Table americanDreamDB.Session
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS americanDreamDB."Session" (
+  "session_id" VARCHAR(255) PRIMARY KEY,
+  "user_id" INT,
+  "role" VARCHAR(45),
+  "timestamp" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- -----------------------------------------------------
+-- Table americanDreamDB.QueryLogs
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS americanDreamDB."QueryLogs" (
+  "timestamp" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  "query" TEXT,
+  "duration_ms" INT
+);
+
+
+-- -----------------------------------------------------
 -- Add Foreign Key Constraints
 -- -----------------------------------------------------
 ALTER TABLE americanDreamDB."Initiative"
