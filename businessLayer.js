@@ -1,6 +1,6 @@
 //import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives } from './dataLayer.js';
 const uuid = require('uuid');
-const {getUserData, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives} = require('./dataLayer.js');
+const {getUserData, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives} = require('./dataLayer.js');
 
 
 function generateSQLTimestamp() { 
@@ -61,6 +61,13 @@ async function callPreviousElections() {
 async function callOngoingElections() {
     console.log("fetching elections");
     result =  await getOngoingElections();
+    console.log(result);
+    return result;
+}
+
+async function callSocieties() {
+    console.log('fetching your societies');
+    result = await getSocieties();
     console.log(result);
     return result;
 }
@@ -179,5 +186,6 @@ module.exports = {
     getSystemStats,
     getActiveElectionByUser,
     getElectionData,
-    createOffice
+    createOffice,
+    callSocieties
     };
