@@ -1,6 +1,6 @@
 //import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives } from './dataLayer.js';
-//import { v4 } from 'uuid';
-const {getUserData, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives} = require('./dataLayer.js');
+const uuid = require('uuid');
+const {getUserData, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives} = require('./dataLayer.js');
 
 
 function generateSQLTimestamp() { 
@@ -23,7 +23,7 @@ async function validateLogin(username, password) {
         console.log("Acceptable password... Checking database...")
         const isValidLogin = await getUserData(username, password);
         if(isValidLogin) {
-        	const uid = v4();
+        	const uid = uuid.v4();
         	insertSessionID(uid, 'member', generateSQLTimestamp());
         	return uid;
         } else {
@@ -85,6 +85,15 @@ async function createSociety(socName) {
     }
 }
 
+async function createOffice(officeName, elecName) {
+    if(checkInput(officeName || elecName)) {
+        return -1;
+    } else {
+        await addOffice(officeName, elecName);
+        return 1;
+    }
+}
+
 async function createBallot(socName, elecName, cndts, inits) {
     console.log("Attempting ballot creation...");
     if(checkInput(socName) ||
@@ -95,6 +104,9 @@ async function createBallot(socName, elecName, cndts, inits) {
         let start = generateSQLTimestamp();
         addBallot(socName, elecName, start);
         let elecID = getElectionID(elecName);
+        console.log(socName);
+        console.log(inits);
+        console.log(cndts);
         inits.forEach((init) => {
             addInitiative(init.name, init.description, elecID);
         });
@@ -166,5 +178,6 @@ module.exports = {
     callOngoingElections,
     getSystemStats,
     getActiveElectionByUser,
-    getElectionData
+    getElectionData,
+    createOffice
     };

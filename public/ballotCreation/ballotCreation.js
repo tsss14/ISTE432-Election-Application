@@ -11,8 +11,18 @@ async function addBallotRequest(societyName, electionName) {
 
 function addInitiative(name, description) {
   initiatives.push({"name" : name, "description" : description});
+  console.log(initiatives);
 }
 
-function addCandidate(name, office, description) {
+function addCandidate(name, description, office) {
   candidates.push({"name": name, "office": office, "description": description});
+  console.log(candidates);
+}
+
+async function addOffice(name, elecName) {
+  const res = await fetch("http://localhost:3000/addoffice", {
+    method: "POST",
+    body: "{'test': 'testbody'}"//JSON.stringify({"officeName": name, "elec_name": elecName})
+  });
+  console.log(await res.text());
 }

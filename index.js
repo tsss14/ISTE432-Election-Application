@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
+const {validateLogin, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
 const port = 3000;
 
-app.use(express.static('/public/'));
+//app.use(express.static('/public/'));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -93,7 +93,7 @@ app.post("/ballotcreate", async function(req, res) {
 	const elecName = req.body.electionName;
 	const cndts = req.body.candidates;
 	const inits = req.body.initiatives;
-        const returnVal = await createBallot(socName, elecName, cndts, inits, start, durr, desc);
+        const returnVal = await createBallot(socName, elecName, cndts, inits);
         if(returnVal === "") {
             return res.status(400).send("Bad ballot info...");
         }
@@ -149,6 +149,16 @@ app.get("/getActiveElection", async function(req, res) {
     }
 
     return res.status(200).json(electionData);
+});
+
+app.post("/addoffice", async function(req, res) {
+    const officeName = req.body.name;
+    const elecName = req.body.elec_name;
+    if (await createOffice(officeName, elecName) !== -1) {
+        return res.status(200).send("Office added succesfully.");
+    } else {
+        return res.status(400).send("Office not added.");
+    }
 });
 
 // Submits vote to the candidate/initiatives of choice

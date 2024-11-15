@@ -40,7 +40,7 @@ async function addSociety(name) {
 
 async function addBallot(name, society_name, startDate) { 
 	const societyID = CLIENT.query(`select society_id from americandreamdb."Society" where name = '${society_name}';`)
-    const res = await CLIENT.query(`insert into americandreamdb."Election" (society_id, name, totalVotes, ballotCount, "startsAt", "endsAt") values ('${societyID}', '${name}', 0, 0, '${startDate}', '${endDate}');`);
+    const res = await CLIENT.query(`insert into americandreamdb."Election" (society_id, name, totalVotes, ballotCount, "startsAt") values ('${societyID}', '${name}', 0, 0, '${startDate}');`);
 	return res;
 }
 
@@ -83,6 +83,11 @@ async function getOngoingElections(){
 async function getElection(){
     const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election"`);
     return res;
+}
+
+async function addOffice(name, elecName) {
+    const elecID = await getElectionID(elecName);
+    await CLIENT.query(`insert into americandreamdb."Office" ("officeName", election_id) values ('${name}', ${elecID});`);
 }
 
 // ---------------------------------------------------------------- Luke Functions
@@ -192,5 +197,5 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {  getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate,
+module.exports = {  getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
                     addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime};
