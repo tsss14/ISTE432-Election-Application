@@ -79,6 +79,7 @@ async function getOngoingElections(){
     return res;
 }
 
+//gets Societies based on user assignment
 async function getSocieties() {
     const res = await CLIENT.query(`SELECT "Society".name FROM americandreamdb."Society" JOIN americandreamdb."Assiggnment" USING society_id`); // needs to find current user id as well
 }

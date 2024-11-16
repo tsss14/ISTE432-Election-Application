@@ -16,7 +16,7 @@ async function dataLoad() {
 
 function displayElections(data) {
 
-  data.forEach(election => {
+  return data.forEach(election => {
     const elecDiv = document.createElement('div');
     elecDiv.id = "elecDiv";
         
