@@ -1,9 +1,5 @@
 
 async function dataLoad() {
-  $(document.body).append(header);
-    $(header).addClass("text-bg-primary p-3").text("Welcome!");
-    $(document.body).append(`<form>\
-        <h2>Previous Elections</h2>`);
   const response = await fetch('http://localhost:3000/pastElections')
     .then(response => response.json())
     .catch(err => console.log("Couldn't fetch data: ", err));
