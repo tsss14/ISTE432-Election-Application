@@ -82,6 +82,12 @@ async function getOngoingElections(){
 //gets Societies based on user assignment
 async function getSocieties() {
     const res = await CLIENT.query(`SELECT "Society".name FROM americandreamdb."Society" JOIN americandreamdb."Assiggnment" USING society_id`); // needs to find current user id as well
+    return res;
+}
+
+async function getProfile() {
+    const res = await CLIENT.query(`SELECT first_name, last_name, username, role,"Society".name FROM americandreamdb."User" JOIN americandreamdb."Assignment" USING user_id JOIN americandreamdb."Society" USING society_id`);
+    return res;
 }
 
 //gets Election data, have to pass in election ID 
@@ -205,4 +211,4 @@ function termconn(){
 module.exports = {  getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
                     addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, 
                     getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime,
-                    getSocieties};
+                    getSocieties, getProfile};
