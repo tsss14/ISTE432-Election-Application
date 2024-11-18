@@ -201,5 +201,7 @@ module.exports = {
     getActiveElectionByUser,
     getElectionData,
     createOffice,
-    validateLogin
+    validateLogin,
+    validatePasswordComplexity,
+    registerUser
     };
