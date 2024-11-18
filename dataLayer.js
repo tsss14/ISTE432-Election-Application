@@ -202,6 +202,8 @@ async function importUsers(filename){
         
     }
 }
+
+
 newConnection('postgres','localhost','americandream','adminpass');
 //importUsers('./data/members.psv');
 function termconn(){
