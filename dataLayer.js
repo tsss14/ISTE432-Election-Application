@@ -17,16 +17,15 @@ function newConnection(uname, hname, db, pwd,){ //given the proper string parama
 
     
 
-
-async function getUserData(uname, pwd) { 
-    const res = await CLIENT.query('SELECT * FROM get_user_login($1, $2)', [uname, pwd]);
-	if(res.rows[0].name === uname) {
-		return true;
-	}
-	else {
-		return false;
-	}
+// updated for pass hashing
+async function getUserData(username) { 
+    const res = await CLIENT.query(
+        'SELECT username, password, role FROM americanDreamDB."User" WHERE username = $1',
+        [username]
+    );
+    return res.rows[0]; 
 }
+
 
 async function addUser(uname, role, fname, lname, phone) { 
     const res = await CLIENT.query(`insert into americandreamdb."User" (first_name, last_name, username, phone, role) values ('${fname}', '${lname}', '${uname}', '${phone}', '${role}');`);
