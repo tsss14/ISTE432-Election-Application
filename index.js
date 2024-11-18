@@ -3,7 +3,7 @@ const app = express();
 const {validateLogin, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
-//app.use(express.static('/public/'));
+app.use(express.static('/public/'));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
