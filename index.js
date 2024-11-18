@@ -23,16 +23,26 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.post("/login", async function(req, res) {
-	console.log(req.body);
-	const uname = req.body.username;
-	const pwrd = req.body.password;
-        const returnVal = await validateLogin(uname, pwrd);
-        if(returnVal === "") {
-            return res.status(400).send("Bad password...");
+// updated for pass hashing
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).send("Missing username or password");
+    }
+
+    try {
+        const sessionID = await validateLogin(username, password);
+        if (sessionID) {
+            res.status(200).json({ sessionID });
+        } else {
+            res.status(401).send("Invalid username or password");
         }
-        return res.status(200).send(returnVal);
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).send("Internal server error");
+    }
 });
+
 
 app.post("/usrcreate", async function(req, res) {
 	console.log(req.body);
