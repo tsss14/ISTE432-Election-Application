@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
+const {validateLogin, registerUser, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
 const port = 3000;
 
 //app.use(express.static('/public/'));
@@ -40,6 +40,25 @@ app.post("/login", async (req, res) => {
     } catch (error) {
         console.error("Error during login:", error);
         res.status(500).send("Internal server error");
+    }
+});
+
+//incorporating user registering
+app.post('/register', async (req, res) => {
+    const { username, role, firstName, lastName, phone, password } = req.body;
+    if (!username || !role || !firstName || !lastName || !password) {
+        return res.status(400).send("All fields are required.");
+    }
+
+    try {
+        await registerUser(username, role, firstName, lastName, phone, password);
+        res.status(201).send("User registered successfully.");
+    } catch (error) {
+        console.error("Error during user registration:", error);
+        if (error.message.includes("Password must contain")) {
+            return res.status(400).send(error.message);
+        }
+        res.status(500).send("Internal server error.");
     }
 });
 
