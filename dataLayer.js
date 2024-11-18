@@ -1,5 +1,6 @@
 const { Client } = require('pg');
 const fs = require('fs'); //file system module 
+const bcrypt = require('bcrypt');
 
 let CLIENT;
 
@@ -26,10 +27,15 @@ async function getUserData(username) {
     return res.rows[0]; 
 }
 
-
-async function addUser(uname, role, fname, lname, phone) { 
-    const res = await CLIENT.query(`insert into americandreamdb."User" (first_name, last_name, username, phone, role) values ('${fname}', '${lname}', '${uname}', '${phone}', '${role}');`);
-	return res;
+// updated for pass hashing
+async function addUser(username, role, firstName, lastName, phone, plainPassword) { 
+    const hashedPassword = await bcrypt.hash(plainPassword, 10); // Hash the password with a salt round of 10
+    const res = await CLIENT.query(
+        `INSERT INTO americanDreamDB."User" (first_name, last_name, username, phone, role, password) 
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [firstName, lastName, username, phone, role, hashedPassword]
+    );
+    return res;
 }
 
 async function addSociety(name) { 
