@@ -79,6 +79,17 @@ async function getOngoingElections(){
     return res;
 }
 
+//gets Societies based on user assignment
+async function getSocieties() {
+    const res = await CLIENT.query(`SELECT "Society".name FROM americandreamdb."Society" JOIN americandreamdb."Assiggnment" USING society_id`); // needs to find current user id as well
+    return res;
+}
+
+async function getProfile() {
+    const res = await CLIENT.query(`SELECT first_name, last_name, username, role,"Society".name FROM americandreamdb."User" JOIN americandreamdb."Assignment" USING user_id JOIN americandreamdb."Society" USING society_id WHERE user_id = `);
+    return res;
+}
+
 //gets Election data, have to pass in election ID 
 async function getElection(){
     const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election"`);
@@ -191,6 +202,8 @@ async function importUsers(filename){
         
     }
 }
+
+
 newConnection('postgres','localhost','americandream','adminpass');
 //importUsers('./data/members.psv');
 function termconn(){
@@ -198,4 +211,6 @@ function termconn(){
 }
 
 module.exports = {  getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
-                    addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime};
+                    addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, 
+                    getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime,
+                    getSocieties, getProfile};

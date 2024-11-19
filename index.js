@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, getActiveElectionByUser, getSystemStats, getElectionData} = require('./businessLayer.js');
+const {validateLogin, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
-//app.use(express.static('/public/'));
+app.use(express.static('/public/'));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -56,6 +56,26 @@ app.get("/pastElections", async function(req, res) {
             return res.status(400).send("Bad user info...");
         }
         return res.status(200).send(returnVal);
+});
+
+app.get("/societyView", async function(req, res) {
+
+    const returnVal = await callSocieties();
+    res.json(returnVal); 
+    if(returnVal === "") {
+        return res.status(400).send("Bad user info...");
+    }
+    return res.status(200).send(returnVal);
+});
+
+app.get("/profileView", async function(req, res) {
+
+    const returnVal = await callProfile();
+    res.json(returnVal); 
+    if(returnVal === "") {
+        return res.status(400).send("Bad user info...");
+    }
+    return res.status(200).send(returnVal);
 });
 
 app.get("/ongoingElections", async function(req, res) {
