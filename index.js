@@ -3,7 +3,8 @@ const app = express();
 const {validateLogin, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
-app.use(express.static('/public/'));
+//app.use(express.static('/public/'));
+app.use(express.json());
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -20,8 +21,6 @@ app.use((req, res, next) => {
     // });
     // next();
 });
-
-app.use(express.json());
 
 app.post("/login", async function(req, res) {
 	console.log(req.body);
@@ -172,7 +171,8 @@ app.get("/getActiveElection", async function(req, res) {
 });
 
 app.post("/addoffice", async function(req, res) {
-    const officeName = req.body.name;
+    console.log(req.body);
+    const officeName = req.body.officeName;
     const elecName = req.body.elec_name;
     if (await createOffice(officeName, elecName) !== -1) {
         return res.status(200).send("Office added succesfully.");

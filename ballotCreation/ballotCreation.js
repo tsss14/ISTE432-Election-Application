@@ -4,6 +4,7 @@ let candidates = [];
 async function addBallotRequest(societyName, electionName) {
   const res = await fetch("http://localhost:3000/ballotcreate", {
     method: "POST",
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({"societyName": societyName, "electionName": electionName, "initiatives": initiatives, "candidates": candidates})
   });
   console.log(await res.text());
@@ -22,7 +23,8 @@ function addCandidate(name, description, office) {
 async function addOffice(name, elecName) {
   const res = await fetch("http://localhost:3000/addoffice", {
     method: "POST",
-    body: "{'test': 'testbody'}"//JSON.stringify({"officeName": name, "elec_name": elecName})
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({"officeName": name, "elec_name": elecName})
   });
   console.log(await res.text());
 }

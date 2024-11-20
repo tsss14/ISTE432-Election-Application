@@ -97,8 +97,10 @@ async function getElection(){
 }
 
 async function addOffice(name, elecName) {
+    console.log("querying database");
     const elecID = await getElectionID(elecName);
-    await CLIENT.query(`insert into americandreamdb."Office" ("officeName", election_id) values ('${name}', ${elecID});`);
+    console.log(name + " " + elecID);
+    await CLIENT.query(`insert into americandreamdb."Office" ("officeName", election_id) values ('${name}', ${elecID[0]});`);
 }
 
 // ---------------------------------------------------------------- Luke Functions

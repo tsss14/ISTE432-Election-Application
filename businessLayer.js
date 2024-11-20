@@ -100,7 +100,7 @@ async function createSociety(socName) {
 }
 
 async function createOffice(officeName, elecName) {
-    if(checkInput(officeName || elecName)) {
+    if(checkInput(officeName) || checkInput(elecName)) {
         return -1;
     } else {
         await addOffice(officeName, elecName);
