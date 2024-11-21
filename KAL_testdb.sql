@@ -13,7 +13,7 @@ CREATE SCHEMA IF NOT EXISTS americanDreamDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."Society" (
   "society_id" SERIAL PRIMARY KEY,
-  "name" VARCHAR(45),
+  "name" VARCHAR(200),
   "memberCount" INT,
   "avgVote" DOUBLE PRECISION
 );
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Society" (
 CREATE TABLE IF NOT EXISTS americanDreamDB."Election" (
   "election_id" SERIAL PRIMARY KEY,
   "society_id" INT NOT NULL,
-  "name" VARCHAR(45),
+  "name" VARCHAR(200),
   "totalVotes" INT,
   "ballotCount" INT,
   "activity" BOOLEAN,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Initiative" (
 -- Table americanDreamDB.Office
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."Office" (
-  "office_id" SERIAL PRIMARY KEY,
+  "office_id" PRIMARY KEY,
   "election_id" INT NOT NULL,
   "officeName" VARCHAR(45),
   "officeVotesAllowed" INT
