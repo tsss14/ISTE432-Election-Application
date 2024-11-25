@@ -108,7 +108,7 @@ async function createOffice(officeName, elecName) {
     }
 }
 
-async function createBallot(socName, elecName, cndts, inits) {
+async function createBallot(socName, elecName) {
     console.log("Attempting ballot creation...");
     if(checkInput(socName) ||
     	checkInput(elecName)) {
@@ -117,8 +117,17 @@ async function createBallot(socName, elecName, cndts, inits) {
         console.log("Acceptable field values... Querying database...")
         let start = generateSQLTimestamp();
         addBallot(socName, elecName, start);
+        return true;
+    }
+}
+
+async function populateBallot(elecName, cndts, inits) {
+    console.log("Attempting ballot population...");
+    if(false) {
+        return "";
+    } else {
+        console.log("Acceptable field values... Querying database...")
         let elecID = getElectionID(elecName);
-        console.log(socName);
         console.log(inits);
         console.log(cndts);
         inits.forEach((init) => {
@@ -127,11 +136,7 @@ async function createBallot(socName, elecName, cndts, inits) {
         cndts.forEach((cndt) => {
             addCandidate(cndt.name, cndt.description, cndt.office);
         });
-        if(ballotAdded) {
-        	return true;
-        } else {
-        	return "";
-        }
+        return true;
     }
 }
 
@@ -186,7 +191,8 @@ module.exports = {
     validateLogin,
     createUser, 
     createSociety, 
-    createBallot, 
+    createBallot,
+    populateBallot, 
     callElection, 
     callPreviousElections,
     callOngoingElections,

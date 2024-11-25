@@ -110,9 +110,19 @@ app.post("/ballotcreate", async function(req, res) {
 	console.log(req.body);
 	const socName = req.body.societyName;
 	const elecName = req.body.electionName;
+        const returnVal = await createBallot(socName, elecName);
+        if(returnVal === "") {
+            return res.status(400).send("Bad ballot info...");
+        }
+        return res.status(200).send(returnVal);
+});
+
+app.post("/ballotpopulate", async function(req, res) {
+	console.log(req.body);
+	const elecName = req.body.electionName;
 	const cndts = req.body.candidates;
 	const inits = req.body.initiatives;
-        const returnVal = await createBallot(socName, elecName, cndts, inits);
+        const returnVal = await populateBallot(elecName, cndts, inits);
         if(returnVal === "") {
             return res.status(400).send("Bad ballot info...");
         }

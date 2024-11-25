@@ -5,18 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ballot Creation - American Dream</title>
     <script src="ballotCreation.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
 </head>
 <body>
-    <form id="createBallotForm">
+    <div class="text-bg-primary p-3"><a class="btn btn-primary m-2" href="../OfficerMenu/index.html"><</a>Ballot Creation</div>
+    <form id="createBallotForm" class="position-absolute top-50 start-50 translate-middle align-middle">
+        <div class="d-flex">
+        <div class="d-flex flex-column m-2">
         <label for="societyName">Society Name:</label>
         <input type="text" id="societyName">
         <label for="electionName">Election Name:</label>
-        <input type="text" id="electionName"><br/>
+        <input type="text" id="electionName">
+        <button type="button" onclick="addBallotRequest(document.getElementById('societyName').value, document.getElementById('electionName').value)">Create Ballot</button>
+        </div>
+        <div class="d-flex flex-column m-2">
         <label for="OfficeName">Office Name:</label>
         <input type="text" id="OfficeName">
         <label for="electionName">Election Name:</label>
         <input type="text" id="officeElectionName">
-        <button type="button" onclick="addOffice(document.getElementById('OfficeName').value, document.getElementById('officeElectionName').value)">Add Office</button><br/>
+        <button type="button" onclick="addOffice(document.getElementById('OfficeName').value, document.getElementById('officeElectionName').value)">Add Office</button>
+        </div>
+        <div class="d-flex flex-column m-2">
+        <label for="InitiativeName">Initiative Name:</label>
+        <input type="text" id="InitiativeName">
+        <label for="InitiativeDesc">Initiative Description:</label>
+        <input type="text" id="InitiativeDesc">
+        <label for="InitiativeImage">Initiative Image:</label>
+        <input type="file" id="InitiativeImage">
+        <button type="button" onclick="addInitiative(document.getElementById('InitiativeName').value, document.getElementById('InitiativeDesc').value)">Add Initiative</button>
+        </div>
+        <div class="d-flex flex-column m-2">
         <label for="candidateName">Candidate Name:</label>
         <input type="text" id="candidateName">
         <label for="candidateOffice">Candidate Office:</label>
@@ -25,15 +44,9 @@
         <input type="text" id="candidateDesc">
         <label for="candidateImage">Candidate Image:</label>
         <input type="file" id="candidateImage">
-        <button type="button" onclick="addCandidate(document.getElementById('candidateName').value, document.getElementById('candidateDesc').value, document.getElementById('candidateOffice').value)">Add Candidate</button><br/>
-        <label for="InitiativeName">Initiative Name:</label>
-        <input type="text" id="InitiativeName">
-        <label for="InitiativeDesc">Initiative Description:</label>
-        <input type="text" id="InitiativeDesc">
-        <label for="InitiativeImage">Initiative Image:</label>
-        <input type="file" id="InitiativeImage">
-        <button type="button" onclick="addInitiative(document.getElementById('InitiativeName').value, document.getElementById('InitiativeDesc').value)">Add Initiative</button><br/>
-        <button type="button" onclick="addBallotRequest(document.getElementById('societyName').value, document.getElementById('electionName').value)">Create Ballot</button>
+        <button type="button" onclick="addCandidate(document.getElementById('candidateName').value, document.getElementById('candidateDesc').value, document.getElementById('candidateOffice').value)">Add Candidate</button>
+        </div></div><br/>
+        <button class="w-100" onclick="populateBallot(document.getElementById('electionName').value)">Add Initiatives And Candidates To Ballot</button>
     </form>
 </body>
 </html>

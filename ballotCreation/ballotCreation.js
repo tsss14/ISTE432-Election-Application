@@ -28,3 +28,12 @@ async function addOffice(name, elecName) {
   });
   console.log(await res.text());
 }
+
+async function populateBallot(elecName) {
+  const res = await fetch("http://localhost:3000/ballotpopulate", {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({"electionName": electionName, "initiatives": initiatives, "candidates": candidates})
+  });
+  console.log(await res.text());
+}
