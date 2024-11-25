@@ -128,6 +128,15 @@ async function getCandidates(office_id) {
     return candidates.rows;
 }
 
+async function getCandidatesForElection(election_id) {
+    let candidates = [];
+    const officesIDs = await CLIENT.query(`SELECT office_id FROM americandreamdb."Office" WHERE election_id = $1`, [election_id]);
+    offices.rows.forEach(async officeID => {
+        candidates.push(await CLIENT.query(`SELECT * FROM americandreamdb."Candidate" WHERE office_id = $1`, [office_id]));
+    });
+    return candidates;
+}
+
 // Gets the initiatives for the election
 async function getInitiatives(election_id) {
     const initiatives = await CLIENT.query(`SELECT * FROM americandreamdb."Initiative" WHERE election_id = $1`, [election_id]);
