@@ -46,7 +46,9 @@
         <input type="file" id="candidateImage">
         <button type="button" onclick="addCandidate(document.getElementById('candidateName').value, document.getElementById('candidateDesc').value, document.getElementById('candidateOffice').value)">Add Candidate</button>
         </div></div><br/>
-        <button class="w-100" onclick="populateBallot(document.getElementById('electionName').value)">Add Initiatives And Candidates To Ballot</button>
+        <label for="populateElectionName">Election Name:</label>
+        <input class="w-100" type="text" id="populateElectionName">
+        <button class="w-100" type="button" onclick="populateBallot(document.getElementById('populateElectionName').value)">Add Initiatives And Candidates To Ballot</button>
     </form>
 </body>
 </html>

@@ -38,9 +38,10 @@ async function addSociety(name) {
 	return res;
 }
 
-async function addBallot(name, society_name, startDate) { 
-	const societyID = CLIENT.query(`select society_id from americandreamdb."Society" where name = '${society_name}';`)
-    const res = await CLIENT.query(`insert into americandreamdb."Election" (society_id, name, totalVotes, ballotCount, "startsAt") values ('${societyID}', '${name}', 0, 0, '${startDate}');`);
+async function addBallot(society_name, election_name, startDate) {
+	const societyIDProm = CLIENT.query(`select society_id from americandreamdb."Society" where name = '${society_name}';`);
+    const societyID = await societyIDProm;
+    const res = await CLIENT.query(`insert into americandreamdb."Election" (society_id, name, "totalVotes", "ballotCount", "startsAt") values ('${societyID.rows[0].society_id}', '${election_name}', 0, 0, '${startDate}');`);
 	return res;
 }
 
@@ -48,18 +49,22 @@ async function getElectionID(electionName) {
     return await CLIENT.query(`select election_id from americandreamdb."Election" where name = '${electionName}';`);
 }
 
-async function addOffice() {
-    
+async function addOffice(office_name, election_name) {
+    const electionID = await CLIENT.query(`select election_id from americandreamdb."Election" where name = '${election_name}';`);
+    console.log(electionID.rows[0].election_id);
+    const res = await CLIENT.query(`insert into americandreamdb."Office" (office_id, election_id, "officeName") values (${Math.floor(Math.random() * 10000000) + 2000}, ${electionID.rows[0].election_id}, '${office_name}');`);
+    return res;
 }
 
 async function addCandidate(name, desc, officeName) {
-	const officeID = CLIENT.query(`select office_id from americandreamdb."Office" where officeName = '${officeName}';`)
-	const res = await CLIENT.query(`insert into americandreamdb."Candidate" (candidateName, description, office_id) values ('${name}', '${desc}', ${officeID});`);
+	const officeID = await CLIENT.query(`select office_id from americandreamdb."Office" where officeName = '${officeName}';`)
+	const res = await CLIENT.query(`insert into americandreamdb."Candidate" ("candidateName", description, office_id) values ('${name}', '${desc}', ${officeID});`);
 	return res;
 }
 
 async function addInitiative(name, desc, election_id) {
-	const res = await CLIENT.query(`insert into americandreamdb."Initiative" (election_id, initName, description) values (${election_id}, '${name}', '${desc}');`);
+    console.log(name + " " + desc + " " + election_id)
+	const res = await CLIENT.query(`insert into americandreamdb."Initiative" (election_id, "initName", description) values (${election_id}, '${name}', '${desc}');`);
 	return res;
 }
 
@@ -94,13 +99,6 @@ async function getProfile() {
 async function getElection(){
     const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election"`);
     return res;
-}
-
-async function addOffice(name, elecName) {
-    console.log("querying database");
-    const elecID = await getElectionID(elecName);
-    console.log(name + " " + elecID);
-    await CLIENT.query(`insert into americandreamdb."Office" ("officeName", election_id) values ('${name}', ${elecID[0]});`);
 }
 
 // ---------------------------------------------------------------- Luke Functions

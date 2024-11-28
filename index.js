@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
+const {validateLogin, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
 //app.use(express.static('/public/'));
@@ -117,6 +117,17 @@ app.post("/ballotcreate", async function(req, res) {
         return res.status(200).send(returnVal);
 });
 
+app.post("/addoffice", async function(req, res) {
+    console.log(req.body);
+    const officeName = req.body.officeName;
+    const elecName = req.body.elec_name;
+    if (await createOffice(officeName, elecName) !== -1) {
+        return res.status(200).send("Office added succesfully.");
+    } else {
+        return res.status(400).send("Office not added.");
+    }
+});
+
 app.post("/ballotpopulate", async function(req, res) {
 	console.log(req.body);
 	const elecName = req.body.electionName;
@@ -178,17 +189,6 @@ app.get("/getActiveElection", async function(req, res) {
     }
 
     return res.status(200).json(electionData);
-});
-
-app.post("/addoffice", async function(req, res) {
-    console.log(req.body);
-    const officeName = req.body.officeName;
-    const elecName = req.body.elec_name;
-    if (await createOffice(officeName, elecName) !== -1) {
-        return res.status(200).send("Office added succesfully.");
-    } else {
-        return res.status(400).send("Office not added.");
-    }
 });
 
 // Submits vote to the candidate/initiatives of choice

@@ -100,7 +100,7 @@ async function createSociety(socName) {
 }
 
 async function createOffice(officeName, elecName) {
-    if(checkInput(officeName) || checkInput(elecName)) {
+    if(checkInput(officeName)) {
         return -1;
     } else {
         await addOffice(officeName, elecName);
@@ -110,8 +110,7 @@ async function createOffice(officeName, elecName) {
 
 async function createBallot(socName, elecName) {
     console.log("Attempting ballot creation...");
-    if(checkInput(socName) ||
-    	checkInput(elecName)) {
+    if(false) {
         return "";
     } else {
         console.log("Acceptable field values... Querying database...")
@@ -127,11 +126,12 @@ async function populateBallot(elecName, cndts, inits) {
         return "";
     } else {
         console.log("Acceptable field values... Querying database...")
-        let elecID = getElectionID(elecName);
+        console.log(elecName);
+        let elecID = await getElectionID(elecName);
         console.log(inits);
         console.log(cndts);
         inits.forEach((init) => {
-            addInitiative(init.name, init.description, elecID);
+            addInitiative(init.name, init.description, elecID.rows[0].election_id);
         });
         cndts.forEach((cndt) => {
             addCandidate(cndt.name, cndt.description, cndt.office);
