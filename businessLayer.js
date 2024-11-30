@@ -55,7 +55,7 @@ async function createUser(uname, role, fname, lname, phone) {
 async function callPreviousElections() {
     console.log("fetching elections");
     result =  await getPreviousElections();
-    console.log(result);
+    //console.log(result);
     return result;
 }
 async function callOngoingElections() {
