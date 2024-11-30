@@ -11,17 +11,17 @@ async function dataLoad() {
 
 function displayElections(data) {
 
-  return data.forEach(election => {
+  return data.rows.forEach(election => {
     const elecDiv = document.createElement('div');
     elecDiv.id = "elecDiv";
         
     const elecTitle = document.createElement('div');
     elecTitle.id = "elecTitle";
-    elecTitle.textContent = data.fieldstitle;
+    elecTitle.textContent = election.name;
         
     const endDate = document.createElement('div');
     endDate.id = "endDate";
-    endDate.textContent = data.endDate;
+    endDate.textContent = election.endsAt;
         
     elecDiv.appendChild(elecTitle);
     elecDiv.appendChild(endDate);
