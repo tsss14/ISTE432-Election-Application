@@ -8,6 +8,7 @@ async function dataLoad() {
   }else  {
     $('#electionContent').html('<h4>No previous elections found.</h4>')
   }
+  return
 } 
 
 function displayElections(data) {

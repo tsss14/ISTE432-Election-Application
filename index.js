@@ -3,11 +3,12 @@ const app = express();
 const {validateLogin, createOffice, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
-app.use('/static', express.static('/public/'));
+app.use('/static', express.static('public'));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader('Content-Type', 'application/json');
     next();
     // const start = Date.now(); This function need to be in this app.use, but the query should happen in the business layer
     // res.on('finish', () => {
@@ -48,14 +49,15 @@ app.post("/usrcreate", async function(req, res) {
         return res.status(200).send(returnVal);
 });
 
-app.get("/pastElections", async function(req, res) {
+app.get("/pastElections", async (req, res) => {
 
         const returnVal = await callPreviousElections();
         res.json(returnVal); 
         if(returnVal === "") {
             return res.status(400).send("Bad user info...");
+        } else {
+            return res.status(200).send(returnVal);
         }
-        return res.status(200).send(returnVal);
 });
 
 app.get("/societyView", async function(req, res) {
