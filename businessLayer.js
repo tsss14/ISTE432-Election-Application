@@ -1,6 +1,6 @@
 //import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives } from './dataLayer.js';
 const uuid = require('uuid');
-const {getUserData, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives, getProfile} = require('./dataLayer.js');
+const {getUserData, fetchBallotData, fetchInitiativeData, fetchCandidateData, fetchActiveBallots, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives, getProfile} = require('./dataLayer.js');
 
 
 function generateSQLTimestamp() { 
@@ -70,6 +70,30 @@ async function callSocieties() {
     result = await getSocieties();
     console.log(result);
     return result;
+}
+
+async function getActiveBallots() {
+    const res = await fetchActiveBallots();
+    if(res === -1) return -1;
+    return res;
+}
+
+async function getBallotData(ballot_name) {
+    const res = await fetchBallotData(ballot_name);
+    if(res === -1) return -1;
+    return res;
+}
+
+async function getInitiativeData(election_id) {
+    const res = await fetchInitiativeData(election_id);
+    if(res === -1) return -1;
+    return res;
+}
+
+async function getCandidateData(election_id) {
+    const res = await fetchCandidateData(election_id);
+    if(res === -1) return -1;
+    return res;
 }
 
 async function callElection() {
@@ -201,5 +225,9 @@ module.exports = {
     getElectionData,
     createOffice,
     callSocieties,
-    callProfile
+    callProfile,
+    getActiveBallots,
+    getBallotData,
+    getInitiativeData,
+    getCandidateData
     };

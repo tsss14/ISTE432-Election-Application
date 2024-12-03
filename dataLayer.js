@@ -78,6 +78,11 @@ async function getPreviousElections(){
     return res;
 }
 
+async function fetchActiveBallots() {
+    const res = await CLIENT.query(`select * from americandreamdb."Election" where "endsAt" < NOW()`);
+    return res;
+}
+
 //gets ongoingElections, will be used for AD employees and admins
 async function getOngoingElections(){
     const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
@@ -212,6 +217,21 @@ async function importUsers(filename){
     }
 }
 
+async function fetchBallotData(ballot_name) {
+    const res = await CLIENT.query(`select * from americandreamdb."Election" where name = '${ballot_name}';`);
+    return res;
+}
+
+async function fetchInitiativeData(election_id) {
+    const res = await CLIENT.query(`select * from americandreamdb."Initiative" where election_id = '${election_id}';`);
+    return res;
+}
+
+async function fetchCandidateData(election_id) {
+    const res = await CLIENT.query(`select * from americandreamdb."Candidate" where election_id = '${election_id}';`);
+    return res;
+}
+
 
 newConnection('postgres','localhost','americandream','adminpass');
 //importUsers('./data/members.psv');
@@ -219,7 +239,7 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {  getUserData, insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
+module.exports = {  fetchInitiativeData, fetchCandidateData, fetchBallotData, getUserData, fetchActiveBallots, insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
                     addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, 
                     getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime,
                     getSocieties, getProfile};

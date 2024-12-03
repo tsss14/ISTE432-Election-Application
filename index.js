@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {validateLogin, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
+const {validateLogin, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
 //app.use(express.static('/public/'));
@@ -20,6 +20,21 @@ app.use((req, res, next) => {
     //    `, [duration, res.statusCode]);
     // });
     // next();
+});
+
+app.get("/getActiveBallots", async function(req, res) {
+    const resp = await getActiveBallots();
+    if(resp === -1) {
+        return res.status(400).send(-1);
+    }
+    return res.status(200).send(resp);
+});
+
+app.post("/getBallotData", async function(req, res) {
+    const ballotName = req.body.ballot_name;
+    const resp = await getBallotData(ballotName);
+    if(resp === -1) return res.status(400).send(-1);
+    return res.status(200).send(resp);
 });
 
 app.post("/login", async function(req, res) {
