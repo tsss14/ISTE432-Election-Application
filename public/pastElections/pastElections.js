@@ -1,9 +1,9 @@
 
 async function dataLoad() {
-  const response = await fetch('http://localhost:3000/pastElections')
+  const response = await fetch('http://localhost:3000/api/pastElections')
     .then(response => response.json())
     .catch(err => console.log("Couldn't fetch data: ", err));
-  if(response && response.endsAt) {
+  if(response) {
     displayElections(response);
   }else  {
     $('#electionContent').html('<h4>No previous elections found.</h4>')
@@ -28,7 +28,7 @@ function displayElections(data) {
     elecDiv.appendChild(elecTitle);
     elecDiv.appendChild(endDate);
         
-    $('#electionContent').appendChild(elecDiv);
+    $('#electionContent').append(elecDiv);
   });
 }
 
