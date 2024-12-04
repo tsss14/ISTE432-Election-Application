@@ -1,11 +1,11 @@
-const { callElection } = require("../../businessLayer");
+//const { callElection } = require("../../businessLayer");
 
 async function dataLoad() {
   const response = await fetch('http://localhost:3000/api/pastElections')
     .then(response => response.json())
     .catch(err => console.log("Couldn't fetch data: ", err));
   if(response) {
-    console.log(response);
+    //console.log(response);
     displayElections(response);
   }else  {
     $('#electionContent').html('<h4>No previous elections found.</h4>')
@@ -19,10 +19,10 @@ function displayElections(data) {
 
   $.each(data.rows, function(index, election) {
     var $listItem = $('<a href="#" class="list-group-item list-group-action" data-id="' + election.id + '">')
-    .text(election.name + " Ended at: " + election.endsAt)
+    .text(election.soc_name, + "Election Name: " + election.name)
     .on('click', function(event) {
       event.preventDefault();
-      callElection(election.id);
+      //callElection(election.id);
     });
     $listGroup.append($listItem)
         

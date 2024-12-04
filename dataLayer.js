@@ -69,7 +69,11 @@ function insertSessionID(sessionID, role, timestamp) {
 
 //gets PreviousElection data
 async function getPreviousElections(){
-    const res = await CLIENT.query(`SELECT name, "endsAt", election_id FROM americandreamdb."Election" WHERE "endsAt" < NOW()`);
+    const res = await CLIENT.query(`SELECT "Election".name AS name, "Society".name AS soc_name , "Election".election_id 
+                                    FROM americandreamdb."Election" 
+                                    JOIN americandreamdb."Society"
+                                    USING(society_id)
+                                    WHERE "Election"."endsAt" < NOW()`);
     return res;
 }
 
