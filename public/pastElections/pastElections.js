@@ -1,9 +1,11 @@
+const { callElection } = require("../../businessLayer");
 
 async function dataLoad() {
   const response = await fetch('http://localhost:3000/api/pastElections')
     .then(response => response.json())
     .catch(err => console.log("Couldn't fetch data: ", err));
   if(response) {
+    console.log(response);
     displayElections(response);
   }else  {
     $('#electionContent').html('<h4>No previous elections found.</h4>')
@@ -12,23 +14,18 @@ async function dataLoad() {
 } 
 
 function displayElections(data) {
+  var $listGroup = $("#electionList");
+  $listGroup.empty();
 
-  return data.rows.forEach(election => {
-    const elecDiv = document.createElement('div');
-    elecDiv.id = "elecDiv";
+  $.each(data.rows, function(index, election) {
+    var $listItem = $('<a href="#" class="list-group-item list-group-action" data-id="' + election.id + '">')
+    .text(election.name + " Ended at: " + election.endsAt)
+    .on('click', function(event) {
+      event.preventDefault();
+      callElection(election.id);
+    });
+    $listGroup.append($listItem)
         
-    const elecTitle = document.createElement('div');
-    elecTitle.id = "elecTitle";
-    elecTitle.textContent = election.name;
-        
-    const endDate = document.createElement('div');
-    endDate.id = "endDate";
-    endDate.textContent = election.endsAt;
-        
-    elecDiv.appendChild(elecTitle);
-    elecDiv.appendChild(endDate);
-        
-    $('#electionContent').append(elecDiv);
   });
 }
 

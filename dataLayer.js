@@ -69,13 +69,13 @@ function insertSessionID(sessionID, role, timestamp) {
 
 //gets PreviousElection data
 async function getPreviousElections(){
-    const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" < NOW()`);
+    const res = await CLIENT.query(`SELECT name, "endsAt", election_id FROM americandreamdb."Election" WHERE "endsAt" < NOW()`);
     return res;
 }
 
 //gets ongoingElections, will be used for AD employees and admins
 async function getOngoingElections(){
-    const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
+    const res = await CLIENT.query(`SELECT name, "endsAt", election_id FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
     return res;
 }
 
@@ -91,8 +91,8 @@ async function getProfile() {
 }
 
 //gets Election data, have to pass in election ID 
-async function getElection(){
-    const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election"`);
+async function getElection(election_id){
+    const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election" WHERE election_id LIKE ${election_id}`);
     return res;
 }
 

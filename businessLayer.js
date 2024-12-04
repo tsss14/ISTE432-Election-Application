@@ -72,9 +72,9 @@ async function callSocieties() {
     return result;
 }
 
-async function callElection() {
+async function callElection(election_id) {
     console.log("fetching Election data");
-    result = await getElection();
+    result = await getElection(election_id);
     return result;
 }
 
