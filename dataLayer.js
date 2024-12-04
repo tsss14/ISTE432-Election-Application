@@ -85,14 +85,14 @@ async function getSocieties() {
     return res;
 }
 
-async function getProfile() {
-    const res = await CLIENT.query(`SELECT first_name, last_name, username, role,"Society".name FROM americandreamdb."User" JOIN americandreamdb."Assignment" USING user_id JOIN americandreamdb."Society" USING society_id WHERE user_id = `);
+async function getProfile(user_id) {
+    const res = await CLIENT.query(`SELECT first_name, last_name, username, role,"Society".name FROM americandreamdb."User" JOIN americandreamdb."Assignment" USING user_id JOIN americandreamdb."Society" USING society_id WHERE user_id LIKE ${user_id} `);
     return res;
 }
 
 //gets Election data, have to pass in election ID 
 async function getElection(election_id){
-    const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election" WHERE election_id LIKE ${election_id}`);
+    const res = await CLIENT.query(`SELECT "Election".election_id, "Election".name, "Election"."totalVotes", "Election"."ballotCount, "Election"."startsAt", "Election"."endsAt", "Society".name FROM americandreamdb."Election" WHERE election_id LIKE ${election_id} JOIN amercandreamdb."Society" USING(society_id)` );
     return res;
 }
 

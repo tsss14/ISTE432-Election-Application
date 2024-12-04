@@ -61,36 +61,48 @@ app.get("/api/pastElections", async (req, res) => {
 
 app.get("/pastElections", function(req, res) {
     res.sendFile(path.join(__dirname, "/public/pastElections/index.html"));
-})
+});
 
-app.get("/societyView", async function(req, res) {
+app.get("/api/societyView", async function(req, res) {
 
     const returnVal = await callSocieties();
-    res.json(returnVal); 
     if(returnVal === "") {
         return res.status(400).send("Bad user info...");
+    } else {
+        return res.status(200).send(returnVal);
     }
-    return res.status(200).send(returnVal);
 });
 
-app.get("/profileView", async function(req, res) {
+app.get("/societyView", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/societyView/index.html"));
+});
+
+app.get("/api/profileView", async function(req, res) {
 
     const returnVal = await callProfile();
-    res.json(returnVal); 
     if(returnVal === "") {
         return res.status(400).send("Bad user info...");
+    } else {
+        return res.status(200).send(returnVal);
     }
-    return res.status(200).send(returnVal);
 });
 
-app.get("/ongoingElections", async function(req, res) {
+app.get("/profileView", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/profileView/index.html"));
+});
+
+app.get("/api/ongoingElections", async function(req, res) {
 
     const returnVal = await callOngoingElections();
-    res.json(returnVal); 
     if(returnVal === "") {
         return res.status(400).send("Bad user info...");
+    } else {
+        return res.status(200).send(returnVal);
     }
-    return res.status(200).send(returnVal);
+});
+
+app.get("/ongoingElections", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/onGoingElections/index.html"));
 });
           
 app.post("/soccreate", async function(req, res) {
