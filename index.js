@@ -129,6 +129,16 @@ app.post("/ballotcreate", async function(req, res) {
         return res.status(200).send(returnVal);
 });
 
+app.post("/addoffice", async function(req, res) {
+    const officeName = req.body.name;
+    const elecName = req.body.elec_name;
+    if (await createOffice(officeName, elecName) !== -1) {
+        return res.status(200).send("Office added succesfully.");
+    } else {
+        return res.status(400).send("Office not added.");
+    }
+});
+
 // ---------------------------------------------------------------- Luke API calls
 
 // Gets active election for logged in user for ballot page
@@ -178,16 +188,6 @@ app.get("/getActiveElection", async function(req, res) {
     }
 
     return res.status(200).json(electionData);
-});
-
-app.post("/addoffice", async function(req, res) {
-    const officeName = req.body.name;
-    const elecName = req.body.elec_name;
-    if (await createOffice(officeName, elecName) !== -1) {
-        return res.status(200).send("Office added succesfully.");
-    } else {
-        return res.status(400).send("Office not added.");
-    }
 });
 
 // Submits vote to the candidate/initiatives of choice
