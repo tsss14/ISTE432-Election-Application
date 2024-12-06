@@ -14,17 +14,26 @@ async function dataLoad() {
 } 
 
 function displayElections(data) {
-  var $listGroup = $("#electionList");
-  $listGroup.empty();
+  $('#electionTable').DataTable( {
+    paging: true
+  });
+  var $tableGroup = $("#electionTable");
+  $tableGroup.empty();
+
 
   $.each(data.rows, function(index, election) {
-    var $listItem = $('<a href="#" class="list-group-item list-group-action" data-id="' + election.id + '">')
-    .text("Name: " + election.name + " || Ended at: " + election.endsAt)
+    var $tableItem = $(` <tr>
+                          <td>${election.soc_name}</td>
+                          <td>${election.name}</td>
+                          <td>${election.id}</td>
+                        </tr>`)
     .on('click', function(event) {
       event.preventDefault();
       //callElection(election.id);
     });
-    $listGroup.append($listItem)
+    $tableGroup.append($tableItem)
+
+    
         
   });
 }
