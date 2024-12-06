@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="ballot.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="ballot.js" defer></script>
     <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
     <title>Ballot Page</title>
 </head>
 <body>
@@ -14,7 +13,7 @@
         <h2 class="text-center">Ballot</h2>
         <div>
             <!-- test for user login should be removed later -->
-            <input type="text" id="user_id" class="form-control" placeholder="Enter User ID" />
+            <input type="text" id="userId" class="form-control" placeholder="Enter User ID" />
             <button class="btn btn-primary mt-2" id="loadUserBallot">Load Ballot</button>
         </div>
         <div id="ballotContent" class="mt-4"></div>
