@@ -55,20 +55,20 @@ async function createUser(uname, role, fname, lname, phone) {
 async function callPreviousElections() {
     console.log("fetching elections");
     result =  await getPreviousElections();
-    console.log(result);
+    //console.log(result);
     return result;
 }
 async function callOngoingElections() {
     console.log("fetching elections");
     result =  await getOngoingElections();
-    console.log(result);
+    //console.log(result);
     return result;
 }
 
 async function callSocieties() {
     console.log('fetching your societies');
     result = await getSocieties();
-    console.log(result);
+    //console.log(result);
     return result;
 }
 
@@ -96,15 +96,15 @@ async function getCandidateData(election_id) {
     return res;
 }
 
-async function callElection() {
+async function callElection(election_id) {
     console.log("fetching Election data");
-    result = await getElection();
+    result = await getElection(election_id);
     return result;
 }
 
-async function callProfile() {
+async function callProfile(user_id) {
     console.log("fetching profile data");
-    result = await getProfile();
+    result = await getProfile(user_id);
     return result;
 }
   

@@ -1,9 +1,11 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const {validateLogin, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
-//app.use(express.static('/public/'));
+app.use(express.static(path.join(__dirname, '/public/')));
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -62,45 +64,62 @@ app.post("/usrcreate", async function(req, res) {
         return res.status(200).send(returnVal);
 });
 
-app.get("/pastElections", async function(req, res) {
+app.get("/api/pastElections", async (req, res) => {
 
-        const returnVal = await callPreviousElections();
-        res.json(returnVal); 
-        if(returnVal === "") {
-            return res.status(400).send("Bad user info...");
-        }
+    const returnVal = await callPreviousElections();
+    if(returnVal === "") {
+        return res.status(400).send("Bad user info...");
+    } else {
         return res.status(200).send(returnVal);
-});
-
-app.get("/societyView", async function(req, res) {
-
-    const returnVal = await callSocieties();
-    res.json(returnVal); 
-    if(returnVal === "") {
-        return res.status(400).send("Bad user info...");
     }
-    return res.status(200).send(returnVal);
 });
 
-app.get("/profileView", async function(req, res) {
-
-    const returnVal = await callProfile();
-    res.json(returnVal); 
-    if(returnVal === "") {
-        return res.status(400).send("Bad user info...");
-    }
-    return res.status(200).send(returnVal);
+app.get("/pastElections", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/pastElections/index.html"));
 });
 
-app.get("/ongoingElections", async function(req, res) {
+app.get("/api/societyView", async function(req, res) {
 
-    const returnVal = await callOngoingElections();
-    res.json(returnVal); 
-    if(returnVal === "") {
-        return res.status(400).send("Bad user info...");
-    }
+const returnVal = await callSocieties();
+if(returnVal === "") {
+    return res.status(400).send("Bad user info...");
+} else {
     return res.status(200).send(returnVal);
+}
 });
+
+app.get("/societyView", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/societyView/index.html"));
+});
+
+app.get("/api/profileView", async function(req, res) {
+
+const returnVal = await callProfile();
+if(returnVal === "") {
+    return res.status(400).send("Bad user info...");
+} else {
+    return res.status(200).send(returnVal);
+}
+});
+
+app.get("/profileView", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/profileView/index.html"));
+});
+
+app.get("/api/ongoingElections", async function(req, res) {
+
+const returnVal = await callOngoingElections();
+if(returnVal === "") {
+    return res.status(400).send("Bad user info...");
+} else {
+    return res.status(200).send(returnVal);
+}
+});
+
+app.get("/ongoingElections", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/onGoingElections/index.html"));
+});
+ 
           
 app.post("/soccreate", async function(req, res) {
 	console.log(req.body);

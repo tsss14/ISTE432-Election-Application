@@ -74,18 +74,17 @@ function insertSessionID(sessionID, role, timestamp) {
 
 //gets PreviousElection data
 async function getPreviousElections(){
-    const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" < NOW()`);
-    return res;
-}
-
-async function fetchActiveBallots() {
-    const res = await CLIENT.query(`select * from americandreamdb."Election" where "endsAt" < NOW()`);
+    const res = await CLIENT.query(`SELECT "Election".name AS name, "Society".name AS soc_name , "Election".election_id 
+                                    FROM americandreamdb."Election" 
+                                    JOIN americandreamdb."Society"
+                                    USING(society_id)
+                                    WHERE "Election"."endsAt" < NOW()`);
     return res;
 }
 
 //gets ongoingElections, will be used for AD employees and admins
 async function getOngoingElections(){
-    const res = await CLIENT.query(`SELECT name, "endsAt" FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
+    const res = await CLIENT.query(`SELECT name, "endsAt", "totalVotes", election_id FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
     return res;
 }
 
@@ -95,14 +94,19 @@ async function getSocieties() {
     return res;
 }
 
-async function getProfile() {
-    const res = await CLIENT.query(`SELECT first_name, last_name, username, role,"Society".name FROM americandreamdb."User" JOIN americandreamdb."Assignment" USING user_id JOIN americandreamdb."Society" USING society_id WHERE user_id = `);
+async function getProfile(user_id) {
+    const res = await CLIENT.query(`SELECT first_name, last_name, username, role,"Society".name FROM americandreamdb."User" JOIN americandreamdb."Assignment" USING user_id JOIN americandreamdb."Society" USING society_id WHERE user_id = $1`,[user_id]);
     return res;
 }
 
 //gets Election data, have to pass in election ID 
-async function getElection(){
-    const res = await CLIENT.query(`SELECT * FROM americandreamdb."Election"`);
+async function getElection(election_id){
+    const res = await CLIENT.query(`SELECT "Election".election_id, "Election".name, "Election"."totalVotes", "Election"."ballotCount, "Election"."startsAt", "Election"."endsAt", "Society".name FROM americandreamdb."Election" WHERE election_id = $1 JOIN amercandreamdb."Society" USING(society_id)`, [election_id]);
+    return res;
+}
+
+async function fetchActiveBallots() {
+    const res = await CLIENT.query(`select * from americandreamdb."Election" where "endsAt" < NOW()`);
     return res;
 }
 
