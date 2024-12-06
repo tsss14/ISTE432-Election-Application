@@ -6,20 +6,18 @@
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="ballot.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <title>Ballot Page</title>
 </head>
 <body>
     <div class="container mt-5">
         <h2 class="text-center">Ballot</h2>
-        <!-- test for user login should be removed -->
-        <div class="mb-4">
-            <label for="userId" class="form-label">Enter User ID:</label>
-            <input type="text" id="user_id" class="form-control" placeholder="User ID" />
+        <div>
+            <!-- test for user login should be removed later -->
+            <input type="text" id="user_id" class="form-control" placeholder="Enter User ID" />
             <button class="btn btn-primary mt-2" id="loadUserBallot">Load Ballot</button>
         </div>
-        <div id="ballotContent">
-        </div>
+        <div id="ballotContent" class="mt-4"></div>
     </div>
 </body>
 </html>
