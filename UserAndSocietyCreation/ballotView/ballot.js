@@ -1,26 +1,31 @@
-async function loadBallot() {
-    const electionData = await fetch('http://localhost:3000/getActiveElection')
-        .then(response => response.json())
-        .catch(err => console.log("Error fetching election data:", err));
+async function loadBallot(user_id) {
+    try {
+        // Pass user_id as a query parameter
+        const electionData = await fetch(`http://localhost:3000/getActiveElection?user_id=${user_id}`)
+            .then(response => response.json());
 
-    if (electionData && electionData.election) {
-        displayBallot(electionData);
-    } else {
-        $('#ballotContent').html('<h4>No active election found.</h4>');
+        if (electionData && electionData.election) {
+            displayBallot(electionData);
+        } else {
+            $('#ballotContent').html('<h4>No active election found for this user.</h4>');
+        }
+    } catch (err) {
+        console.log("Error fetching election data:", err);
+        $('#ballotContent').html('<h4>Error loading ballot. Please try again later.</h4>');
     }
 }
 
 function displayBallot(data) {
     const election = data.election;
-    const offices = data.offices;
-    const candidates = data.candidates;
-    const initiatives = data.initiatives;
+    const offices = data.offices || [];
+    const candidates = data.candidates || [];
+    const initiatives = data.initiatives || [];
 
     let content = `<h3>${election.name}</h3>
                    <p><strong>Start Date:</strong> ${election.startsAt} <strong>End Date:</strong> ${election.endsAt}</p>
                    <h4>Offices and Candidates:</h4>`;
 
-    offices.forEach((office, i) => {
+    offices.forEach(office => {
         content += `<h5>${office.officeName}</h5><ul>`;
         candidates.filter(candidate => candidate.office_id === office.office_id).forEach(candidate => {
             content += `<li>
@@ -67,18 +72,33 @@ async function submitVote() {
         initiatives: selectedInitiatives
     };
 
-    // Submit the vote to the backend
-    const response = await fetch('http://localhost:3000/submitVote', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(voteData)
-    });
+    try {
+        const response = await fetch('http://localhost:3000/submitVote', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(voteData)
+        });
 
-    if (response.ok) {
-        alert("Vote submitted successfully!");
-    } else {
-        alert("Error submitting vote.");
+        if (response.ok) {
+            alert("Vote submitted successfully!");
+        } else {
+            alert("Error submitting vote.");
+        }
+    } catch (err) {
+        console.log("Error submitting vote:", err);
+        alert("Error submitting vote. Please try again.");
     }
 }
 
-$(document).ready(loadBallot);
+$(document).ready(() => {
+    $('#loadUserBallot').click(() => {
+        // Capture user_id input from the text box
+        const user_id = $('#userId').val().trim();
+
+        if (user_id) {
+            loadBallot(user_id); // Pass user_id to the loadBallot function
+        } else {
+            alert("Please enter a User ID.");
+        }
+    });
+});
