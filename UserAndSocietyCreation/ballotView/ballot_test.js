@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // handle candidate selection
     function selectCandidate(candidateId) {
         selectedCandidateId = candidateId;
-        submitVoteButton.disabled = false;  // Enable the submit button
+        submitVoteButton.disabled = false;  
     }
 
     // handle vote submission
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('/submitVote', {  // Adjust the endpoint as necessary
+            const response = await fetch('/submitVote', {  
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ candidate_id: selectedCandidateId })
