@@ -19,7 +19,7 @@ function displayElections(data) {
 
   $.each(data.rows, function(index, election) {
     var $listItem = $('<a href="#" class="list-group-item list-group-action" data-id="' + election.id + '">')
-    .text(election.name + " Ended at: " + election.endsAt)
+    .text("Name: " + election.name + " || Ended at: " + election.endsAt)
     .on('click', function(event) {
       event.preventDefault();
       callElection(election.id);
