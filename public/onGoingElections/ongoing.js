@@ -1,8 +1,8 @@
 async function dataLoad() {
-  const response = await fetch('http://localhost:3000/ongoingElections')
+  const response = await fetch('http://localhost:3000/api/ongoingElections')
     .then(response => response.json())
     .catch(err => console.log("Couldn't fetch data: ", err));
-  if(response && response.endsAt) {
+  if(response) {
     displayElections(response);
   }else  {
     $('#electionContent').html('<h4>No ongoing elections found.</h4>')
@@ -10,23 +10,17 @@ async function dataLoad() {
 } 
 
 function displayElections(data) {
+  var $listGroup = $("#electionList");
+  $listGroup.empty();
 
-  return data.rows.forEach(election => {
-    const elecDiv = document.createElement('div');
-    elecDiv.id = "elecDiv";
+  $.each(data.rows, function(index, election) {
+    var $listItem = $('<a href="#" class="list-group-item list-group-action" data-id="' + election.id + '">')
+    .text("Name: " + election.name + " || Ends at: " + election.endsAt + " || Total Votes" + election.totalVotes)
+    .on('click', function(event) {
+      event.preventDefault();
+    });
+    $listGroup.append($listItem)
         
-    const elecTitle = document.createElement('div');
-    elecTitle.id = "elecTitle";
-    elecTitle.textContent = election.name;
-        
-    const endDate = document.createElement('div');
-    endDate.id = "endDate";
-    endDate.textContent = election.endsAt;
-        
-    elecDiv.appendChild(elecTitle);
-    elecDiv.appendChild(endDate);
-        
-    $('#electionContent').appendChild(elecDiv);
   });
 }
 

@@ -79,7 +79,7 @@ async function getPreviousElections(){
 
 //gets ongoingElections, will be used for AD employees and admins
 async function getOngoingElections(){
-    const res = await CLIENT.query(`SELECT name, "endsAt", election_id FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
+    const res = await CLIENT.query(`SELECT name, "endsAt", "totalVotes", election_id FROM americandreamdb."Election" WHERE "endsAt" > NOW()`);
     return res;
 }
 
