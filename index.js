@@ -6,19 +6,13 @@ const port = 3000;
 //app.use(express.static('/public/'));
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Origin", "*");  
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); 
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();  
+    }
     next();
-    // const start = Date.now(); This function need to be in this app.use, but the query should happen in the business layer
-    // res.on('finish', () => {
-    //    const duration = Date.now() - start; 
-  
-    //   CLIENT.query(`
-    //      INSERT INTO americanDreamDB."System" ("queryTime", "httpTime")
-    //      VALUES ($1, $2)
-    //    `, [duration, res.statusCode]);
-    // });
-    // next();
 });
 
 app.use(express.json());
