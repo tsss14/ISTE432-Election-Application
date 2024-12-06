@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ballot Test</title>
-    <script src="ballot_test.js" defer></script>
+    <title>Ballot Voting</title>
 </head>
 <body>
-    <h1>Ballot Voting</h1>
-    <form id="ballotForm">
-        <label for="userId">Enter your User ID:</label>
-        <input type="text" id="userId" name="userId" required>
-        <button type="submit">Submit</button>
-    </form>
+    <h1>Election Ballot for Society ID: 1</h1>
+    <div id="election-details">
+        <h2>Election Details</h2>
+        <p id="election-name">Loading election...</p>
+        <p id="election-start-date">Loading start date...</p>
+        <p id="election-end-date">Loading end date...</p>
+        <h3>Candidates</h3>
+        <ul id="candidate-list">
+        </ul>
+        <button id="submit-vote" disabled>Submit Vote</button>
+    </div>
 
-    <div id="ballotResults"></div>
+    <script src="ballot_test.js"></script>
 </body>
 </html>
