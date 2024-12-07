@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const {validateLogin, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
+const {validateLogin, registerUser, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '/public/')));
@@ -11,6 +11,10 @@ app.use(express.json());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();  
+    }
     next();
     // const start = Date.now(); This function need to be in this app.use, but the query should happen in the business layer
     // res.on('finish', () => {
@@ -39,15 +43,43 @@ app.post("/getBallotData", async function(req, res) {
     return res.status(200).send(resp);
 });
 
-app.post("/login", async function(req, res) {
-	console.log(req.body);
-	const uname = req.body.username;
-	const pwrd = req.body.password;
-        const returnVal = await validateLogin(uname, pwrd);
-        if(returnVal === "") {
-            return res.status(400).send("Bad password...");
+// updated for pass hashing
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).send("Missing username or password");
+    }
+
+    try {
+        const sessionID = await validateLogin(username, password);
+        if (sessionID) {
+            res.status(200).json({ sessionID });
+        } else {
+            res.status(401).send("Invalid username or password");
         }
-        return res.status(200).send(returnVal);
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).send("Internal server error");
+    }
+});
+
+//incorporating user registering
+app.post('/register', async (req, res) => {
+    const { username, role, firstName, lastName, phone, password } = req.body;
+    if (!username || !role || !firstName || !lastName || !password) {
+        return res.status(400).send("All fields are required.");
+    }
+
+    try {
+        await registerUser(username, role, firstName, lastName, phone, password);
+        res.status(201).send("User registered successfully.");
+    } catch (error) {
+        console.error("Error during user registration:", error);
+        if (error.message.includes("Password must contain")) {
+            return res.status(400).send(error.message);
+        }
+        res.status(500).send("Internal server error.");
+    }
 });
 
 app.post("/usrcreate", async function(req, res) {
@@ -215,7 +247,7 @@ app.get('/system-stats', async (req, res) => {
 
 // Gets current active election for logged in user
 app.get("/getActiveElection", async function(req, res) {
-    const user_id = req.body.user_id;  
+    const user_id = req.query.user_id;  
     const electionData = await getElectionData(user_id);
     
     if (!electionData) {
