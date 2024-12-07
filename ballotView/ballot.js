@@ -1,12 +1,20 @@
 async function loadBallot() {
-    const electionData = await fetch('http://localhost:3000/getActiveElection')
+    // Get the user_id from the textbox input field (temp)
+    const userId = document.getElementById('user_id_input').value;
+
+    if (!userId) {
+        alert("Please enter a user ID.");
+        return;
+    }
+
+    const electionData = await fetch(`http://localhost:3000/getActiveElection?user_id=${userId}`)
         .then(response => response.json())
         .catch(err => console.log("Error fetching election data:", err));
 
     if (electionData && electionData.election) {
         displayBallot(electionData);
     } else {
-        $('#ballotContent').html('<h4>No active election found.</h4>');
+        document.getElementById('ballotContent').innerHTML = '<h4>No active election found.</h4>';
     }
 }
 
@@ -43,9 +51,9 @@ function displayBallot(data) {
     }
 
     content += `<button class="btn btn-primary" id="submitVote">Submit Vote</button>`;
-    $('#ballotContent').html(content);
+    document.getElementById('ballotContent').innerHTML = content;
 
-    $('#submitVote').click(submitVote);
+    document.getElementById('submitVote').addEventListener('click', submitVote);
 }
 
 async function submitVote() {
@@ -53,13 +61,13 @@ async function submitVote() {
     const selectedInitiatives = [];
 
     // Collect selected candidates
-    $('input[type=radio]:checked').each(function() {
-        selectedCandidates.push($(this).val());
+    document.querySelectorAll('input[type=radio]:checked').forEach(function(checkbox) {
+        selectedCandidates.push(checkbox.value);
     });
 
     // Collect selected initiatives
-    $('input[type=checkbox]:checked').each(function() {
-        selectedInitiatives.push($(this).val());
+    document.querySelectorAll('input[type=checkbox]:checked').forEach(function(checkbox) {
+        selectedInitiatives.push(checkbox.value);
     });
 
     const voteData = {
@@ -70,7 +78,7 @@ async function submitVote() {
     // Submit the vote to the backend
     const response = await fetch('http://localhost:3000/submitVote', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(voteData)
     });
 
@@ -81,4 +89,6 @@ async function submitVote() {
     }
 }
 
-$(document).ready(loadBallot);
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('loadBallotButton').addEventListener('click', loadBallot);
+});
