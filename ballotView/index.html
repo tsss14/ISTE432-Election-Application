@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="ballot.js"></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
     <title>Ballot Page</title>
 </head>
 <body>
     <div class="container mt-5">
         <h2 class="text-center">Ballot</h2>
-        <div id="ballotContent">
+
+        <!-- user id input (temp) -->
+        <div class="mb-3">
+            <label for="user_id_input" class="form-label">Enter User ID:</label>
+            <input type="number" class="form-control" id="user_id_input" placeholder="Enter your user ID">
+        </div>
+
+        <button class="btn btn-primary" id="loadBallotButton">Load Ballot</button>
+
+        <div id="ballotContent" class="mt-4">
         </div>
     </div>
 </body>
