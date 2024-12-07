@@ -6,20 +6,17 @@ async function getActiveBallots() {
     let data = await res.json();
     data = data.rows;
     data.forEach(row => {
-        $('#electionSelect').append(`<button class="btn btn-primary d-block" type="button" onclick="getBallotData(${row.name})">${row.name}</button>`);
+        $('#electionSelect').append(`<button class="btn btn-primary d-block" type="button" onclick="getBallotData(${row.election_id})">${row.name}</button>`);
     });
 }
 
-async function getBallotData(ballotName) {
+async function getBallotData(electionID) {
     let res = await fetch("http://localhost:3000/getBallotInitData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ballot_name: ballotName})
+        body: JSON.stringify({election_id: electionID})
     });
-
     let data = await res.json();
-    data = data.rows;
-
     data.forEach(row => {
         $('#initiativeSelect').append(`<p>${row.initName}</p>`);
     });
@@ -27,19 +24,22 @@ async function getBallotData(ballotName) {
     res = await fetch("http://localhost:3000/getBallotCandData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ballot_name: ballotName})
+        body: JSON.stringify({election_id: electionID})
     });
 
     data = await res.json();
-    data = data.rows;
+    console.log(data);
+    data.forEach(row => {
+        $('#candidateSelect').append(`<p>${row.name}</p>`);
+    });
 
-    res = await fetch("http://localhost:3000/getBallotInfo", {
+    res = await fetch("http://localhost:3000/getBallotData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ballot_name: ballotName})
+        body: JSON.stringify({election_id: electionID})
     });
 
     data = await res.json();
-    data = data.rows;
+    $('#infoEditor').append(`<input type='text' value='${data.rows[0].name}'></input>`);
     
 }

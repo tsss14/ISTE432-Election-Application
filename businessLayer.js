@@ -1,6 +1,6 @@
 //import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives } from './dataLayer.js';
 const uuid = require('uuid');
-const {getUserData, fetchBallotData, fetchInitiativeData, fetchCandidateData, fetchActiveBallots, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives, getProfile} = require('./dataLayer.js');
+const {getUserData, fetchBallotData, getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchActiveBallots, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives, getProfile} = require('./dataLayer.js');
 
 
 function generateSQLTimestamp() { 
@@ -78,20 +78,20 @@ async function getActiveBallots() {
     return res;
 }
 
-async function getBallotData(ballot_name) {
-    const res = await fetchBallotData(ballot_name);
+async function getBallotData(election_id) {
+    const res = await fetchBallotData(election_id);
     if(res === -1) return -1;
     return res;
 }
 
 async function getInitiativeData(election_id) {
-    const res = await fetchInitiativeData(election_id);
+    const res = await getInitiatives(election_id);
     if(res === -1) return -1;
     return res;
 }
 
 async function getCandidateData(election_id) {
-    const res = await fetchCandidateData(election_id);
+    const res = await getCandidatesForElection(election_id);
     if(res === -1) return -1;
     return res;
 }

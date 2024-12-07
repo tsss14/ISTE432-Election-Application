@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const {validateLogin, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
+const {validateLogin, getInitiativeData, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '/public/')));
@@ -32,9 +32,23 @@ app.get("/getActiveBallots", async function(req, res) {
     return res.status(200).send(resp);
 });
 
+app.post("/getBallotInitData", async function(req, res) {
+    const electionID = req.body.election_id;
+    const resp = await getInitiativeData(electionID);
+    if(resp === -1) return res.status(400).send(-1);
+    return res.status(200).send(resp);
+});
+
+app.post("/getBallotCandData", async function(req, res) {
+    const electionID = req.body.election_id;
+    const resp = await getCandidateData(electionID);
+    if(resp === -1) return res.status(400).send(-1);
+    return res.status(200).send(resp);
+});
+
 app.post("/getBallotData", async function(req, res) {
-    const ballotName = req.body.ballot_name;
-    const resp = await getBallotData(ballotName);
+    const electionID = req.body.election_id;
+    const resp = await getBallotData(electionID);
     if(resp === -1) return res.status(400).send(-1);
     return res.status(200).send(resp);
 });

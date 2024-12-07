@@ -138,8 +138,8 @@ async function getCandidates(office_id) {
 async function getCandidatesForElection(election_id) {
     let candidates = [];
     const officesIDs = await CLIENT.query(`SELECT office_id FROM americandreamdb."Office" WHERE election_id = $1`, [election_id]);
-    offices.rows.forEach(async officeID => {
-        candidates.push(await CLIENT.query(`SELECT * FROM americandreamdb."Candidate" WHERE office_id = $1`, [office_id]));
+    officesIDs.rows.forEach(async officeID => {
+        candidates.push(await CLIENT.query(`SELECT * FROM americandreamdb."Candidate" WHERE office_id = $1`, [officeID.office_id]));
     });
     return candidates;
 }
@@ -221,8 +221,8 @@ async function importUsers(filename){
     }
 }
 
-async function fetchBallotData(ballot_name) {
-    const res = await CLIENT.query(`select * from americandreamdb."Election" where name = '${ballot_name}';`);
+async function fetchBallotData(election_id) {
+    const res = await CLIENT.query(`select * from americandreamdb."Election" where election_id = '${election_id}';`);
     return res;
 }
 
@@ -243,7 +243,8 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {  fetchInitiativeData, fetchCandidateData, fetchBallotData, getUserData, fetchActiveBallots, insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
+module.exports = {  getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchBallotData, getUserData, fetchActiveBallots,
+                    insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
                     addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, 
                     getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime,
                     getSocieties, getProfile};

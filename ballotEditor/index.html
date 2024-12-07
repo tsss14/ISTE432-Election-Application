@@ -11,10 +11,24 @@
 </head>
 <body onload="getActiveBallots()">
     <div class="text-bg-primary p-3"><a class="btn btn-primary m-2" href="../OfficerMenu/index.html"><</a>Ballot Editor</div>
-    <div class="d-flex">
+    <div class="d-flex justify-content-around">
         <div class="overflow-auto" style="max-height: 50vh;" id="electionSelect"></div>
-        <div id="initiativeSelect"></div>
-        <div id="candidateSelect"></div>
+        <div id="initiativeSelect">
+            <label for="initName">Initiative Name:</label><br>
+            <input type="text" id="initName"></input><br>
+            <label for="initDesc">Initiative Description:</label><br>
+            <input type="text" id="initDesc"></input><br>
+            <button>Add Initiative</button>
+        </div>
+        <div id="candidateSelect">
+            <label for="candName">Candidate Name:</label><br>
+            <input type="text" id="candName"></input><br>
+            <label for="candDesc">Candidate Description:</label><br>
+            <input type="text" id="candDesc"></input><br>
+            <label for="candOffice">Candidate Office:</label><br>
+            <input type="text" id="candOffice"></input><br>
+            <button>Add Candidate</button>
+        </div>
         <div id="infoEditor"></div>
     </div>
 </body>
