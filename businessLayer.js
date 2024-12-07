@@ -15,22 +15,42 @@ function checkInput(input) {
 	return !/^\w+$/.test(input);
 }
 
+// --------------------- password hashing + login vvv
 async function validateLogin(username, password) {
     console.log("Validating login...");
-    if(!/(?=.*\d)(?=.*[a-z])(?=.*[ !"#$%&'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])(?=.*[A-Z]).{8,}/.test(password)) {
-        return "";
+    const user = await getUserData(username); 
+    if (!user) {
+        console.log("User not found");
+        return ""; 
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password); 
+    if (isPasswordValid) {
+        console.log("Password is valid. Creating session...");
+        const sessionID = uuid.v4();
+        await insertSessionID(sessionID, user.role, generateSQLTimestamp());
+        return sessionID; 
     } else {
-        console.log("Acceptable password... Checking database...")
-        const isValidLogin = await getUserData(username, password);
-        if(isValidLogin) {
-        	const uid = uuid.v4();
-        	insertSessionID(uid, 'member', generateSQLTimestamp());
-        	return uid;
-        } else {
-        	return "";
-        }
+        console.log("Invalid password");
+        return "";
     }
 }
+
+function validatePasswordComplexity(password) {
+    const complexPasswordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[ !"#$%&'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])(?=.*[A-Z]).{8,}/;
+    return complexPasswordRegex.test(password);
+}
+
+async function registerUser(username, role, firstName, lastName, phone, password) {
+    if (!validatePasswordComplexity(password)) {
+        throw new Error(
+            "Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long."
+        );
+    }
+    return await addUser(username, role, firstName, lastName, phone, password);
+}
+
+// --------------------- password hashing + login ^^^
 
 async function createUser(uname, role, fname, lname, phone) {
     console.log("Attempting user creation...");
@@ -213,6 +233,8 @@ async function getElectionData(user_id) {
 
 module.exports = { 
     validateLogin,
+    validatePasswordComplexity,
+    registerUser,
     createUser, 
     createSociety, 
     createBallot,
