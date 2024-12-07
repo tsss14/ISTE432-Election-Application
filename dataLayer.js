@@ -1,5 +1,6 @@
 const { Client } = require('pg');
 const fs = require('fs'); //file system module 
+const bcrypt = require('bcrypt');
 
 let CLIENT;
 
@@ -18,19 +19,24 @@ function newConnection(uname, hname, db, pwd,){ //given the proper string parama
     
 
 
-async function getUserData(uname, pwd) { 
-    const res = await CLIENT.query('SELECT * FROM get_user_login($1, $2)', [uname, pwd]);
-	if(res.rows[0].name === uname) {
-		return true;
-	}
-	else {
-		return false;
-	}
+// updated for pass hashing
+async function getUserData(username) { 
+    const res = await CLIENT.query(
+        'SELECT username, password, role FROM americanDreamDB."User" WHERE username = $1',
+        [username]
+    );
+    return res.rows[0]; 
 }
 
-async function addUser(uname, role, fname, lname, phone) { 
-    const res = await CLIENT.query(`insert into americandreamdb."User" (first_name, last_name, username, phone, role) values ('${fname}', '${lname}', '${uname}', '${phone}', '${role}');`);
-	return res;
+// updated for pass hashing
+async function addUser(username, role, firstName, lastName, phone, plainPassword) { 
+    const hashedPassword = await bcrypt.hash(plainPassword, 10); // hash the password with a salt round of 10
+    const res = await CLIENT.query(
+        `INSERT INTO americanDreamDB."User" (first_name, last_name, username, phone, role, password) 
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [firstName, lastName, username, phone, role, hashedPassword]
+    );
+    return res;
 }
 
 async function addSociety(name) { 
@@ -118,9 +124,9 @@ async function getActiveElection(user_id) {
     const currentDate = new Date();
     const election = await CLIENT.query(`
         SELECT * FROM americandreamdb."Election" 
-        WHERE society_id = $1 AND $2 BETWEEN startsAt AND endsAt`, [societyID, currentDate]);
+        WHERE society_id = $1 AND $2 BETWEEN "startsAt" AND "endsAt"`, [societyID, currentDate]);
 
-    return election.rows.length ? election.rows[0] : null;
+    return election.rows.length ? election.rows[0] : null; // checks if array is empty (if-else)
 }
 
 // Gets the offices related to the election
