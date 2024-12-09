@@ -11,7 +11,6 @@ app.use(express.json());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
     if (req.method === "OPTIONS") {
         return res.status(200).end();  
     }
@@ -58,7 +57,7 @@ app.post("/getBallotData", async function(req, res) {
 });
 
 // updated for pass hashing
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
         return res.status(400).send("Missing username or password");
@@ -76,6 +75,11 @@ app.post("/login", async (req, res) => {
         res.status(500).send("Internal server error");
     }
 });
+
+app.get("/login", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/login/index.html"));
+    });
+
 
 //incorporating user registering
 app.post('/register', async (req, res) => {

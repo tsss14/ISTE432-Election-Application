@@ -18,7 +18,7 @@ function init() {
     $('form').last().addClass('position-absolute top-50 start-50 translate-middle align-middle');
 
     $("button").first().click(async function() {
-      const res = await fetch(`http://localhost:3000/login`, {
+      const res = await fetch(`http://localhost:3000/api/login`, {
 		method: "POST",
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify({'password': `${$('#InputPassword').val()}`, 'username': `${$('#InputUsername').val()}`})
