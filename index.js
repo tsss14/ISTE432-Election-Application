@@ -1,11 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-<<<<<<< HEAD
-const {validateLogin, getInitiativeData, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
-=======
-const {validateLogin, registerUser, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection, callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
->>>>>>> 98569f9b4fa13bc15bc2d75a0c9517ca836be43f
+const {validateLogin, getInitiativeData, registerUser, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '/public/')));
