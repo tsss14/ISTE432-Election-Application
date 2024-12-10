@@ -166,23 +166,20 @@ if(returnVal === "") {
 }
 });
 
-app.get("/onGoingElections", function(req, res) {
-res.sendFile(path.join(__dirname, "/public/onGoingElections/index.html"));
-});
- 
-          
+
+
 app.post("/soccreate", async function(req, res) {
-	console.log(req.body);
+    console.log(req.body);
 	const socName = req.body.societyName;
-        const returnVal = await createSociety(socName);
-        if(returnVal === "") {
-            return res.status(400).send("Bad society name...");
-        }
-        return res.status(200).send(returnVal);
+    const returnVal = await createSociety(socName);
+    if(returnVal === "") {
+        return res.status(400).send("Bad society name...");
+    }
+    return res.status(200).send(returnVal);
 });
 
 app.get("/ElectionView", async function(req, res) {
-
+    
     const returnVal = await callElection();
     if(returnVal === "") {
         return res.status(400).send("Bad user info...");
@@ -190,15 +187,16 @@ app.get("/ElectionView", async function(req, res) {
     return res.status(200).send(returnVal);
 });
 
+
 app.post("/ballotcreate", async function(req, res) {
-	console.log(req.body);
+    console.log(req.body);
 	const socName = req.body.societyName;
 	const elecName = req.body.electionName;
-        const returnVal = await createBallot(socName, elecName);
-        if(returnVal === "") {
-            return res.status(400).send("Bad ballot info...");
-        }
-        return res.status(200).send(returnVal);
+    const returnVal = await createBallot(socName, elecName);
+    if(returnVal === "") {
+        return res.status(400).send("Bad ballot info...");
+    }
+    return res.status(200).send(returnVal);
 });
 
 app.post("/addoffice", async function(req, res) {
@@ -213,16 +211,39 @@ app.post("/addoffice", async function(req, res) {
 });
 
 app.post("/ballotpopulate", async function(req, res) {
-	console.log(req.body);
+    console.log(req.body);
 	const elecName = req.body.electionName;
 	const cndts = req.body.candidates;
 	const inits = req.body.initiatives;
-        const returnVal = await populateBallot(elecName, cndts, inits);
-        if(returnVal === "") {
-            return res.status(400).send("Bad ballot info...");
-        }
-        return res.status(200).send(returnVal);
+    const returnVal = await populateBallot(elecName, cndts, inits);
+    if(returnVal === "") {
+        return res.status(400).send("Bad ballot info...");
+    }
+    return res.status(200).send(returnVal);
 });
+
+// ---------------------------------------------------------------- Page Serving
+app.get("/AdminMenu", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/adminMenu/index.html"));
+});
+
+app.get("/BallotCreation", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/ballotCreation/index.html"));
+});
+
+app.get("/AdminStatistics", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/adminStatistics/index.html"));
+});
+
+app.get("/BallotEdit", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/ballotEditor/index.html"));
+});
+
+app.get("/onGoingElections", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/onGoingElections/index.html"));
+});
+
+
 
 // ---------------------------------------------------------------- Luke API calls
 
