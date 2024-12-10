@@ -3,7 +3,7 @@ function init() {
     const placeholderName = "placeholder name";
     $(document.body).append(header);
     $(header).addClass("text-bg-primary p-3").text("Welcome!");
-    $(document.body).append('<form>\
+    $(document.body).append('<form id="login-form">\
         <h2>Log-in</h2>\
         <div class="mb-3">\
           <label for="InputUsername" class="form-label">Username</label>\
@@ -35,11 +35,13 @@ function init() {
             }
 
             const resJSON = await res.json();
-            const { role } = resJSON;
+            const role = resJSON.sessionID.role;
+            // localStorage.set( `sessionID`, resJSON.sessionID.sessionID );
+            // localStorage.set( `role`, role );
 
             if (role) {
                 // send to menu based on role
-                const scriptPath = `${role}Menu.js`;
+                const scriptPath = `../AdminMenu/${role}Menu.js`;
                 const scriptTag = document.createElement('script');
                 scriptTag.src = scriptPath;
                 document.body.appendChild(scriptTag);
@@ -51,7 +53,6 @@ function init() {
             alert("An error occurred while trying to log in. Please try again.");
         }
 
-      console.log(await res.text());
   	  //const resJSON = await res.json();
 
     });
