@@ -41,7 +41,7 @@ function init() {
 
             if (role) {
                 // send to menu based on role
-                const scriptPath = `../AdminMenu/${role}Menu.js`;
+                const scriptPath = `../${role}Menu/${role}Menu.js`;
                 const scriptTag = document.createElement('script');
                 scriptTag.src = scriptPath;
                 document.body.appendChild(scriptTag);
