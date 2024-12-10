@@ -320,7 +320,7 @@ app.post("/submitVote", async function(req, res) {
     return res.status(200).send("Vote successfully submitted.");
 });
 
-// ----------------------------------------------------------------
+// -----------------------------------------------------------------
 
 app.listen(
     port,
