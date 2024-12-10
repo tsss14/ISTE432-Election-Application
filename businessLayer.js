@@ -29,7 +29,11 @@ async function validateLogin(username, password) {
         console.log("Password is valid. Creating session...");
         const sessionID = uuid.v4();
         await insertSessionID(sessionID, user.role, generateSQLTimestamp());
-        return sessionID; 
+        // return sessionID; 
+        return {
+            sessionID: sessionID,
+            role: user.role
+        };
     } else {
         console.log("Invalid password");
         return "";
