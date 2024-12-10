@@ -57,7 +57,7 @@ app.post("/getBallotData", async function(req, res) {
 });
 
 // updated for pass hashing
-app.post("/api/login", async (req, res) => {
+app.post("/api/login2", async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
         return res.status(400).send("Missing username or password");
