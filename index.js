@@ -224,18 +224,18 @@ app.post("/ballotpopulate", async function(req, res) {
 
 // ---------------------------------------------------------------- Page Serving
 app.get("/AdminMenu", function(req, res) {
-    res.sendFile(path.join(__dirname, "/public/adminMenu/index.html"));
+    res.sendFile(path.join(__dirname, "/public/AdminMenu/index.html"));
 });
 
 app.get("/BallotCreation", function(req, res) {
-    res.sendFile(path.join(__dirname, "/public/ballotCreation/index.html"));
+    res.sendFile(path.join(__dirname, "/public/BallotCreation/index.html"));
 });
 
 app.get("/AdminStatistics", function(req, res) {
-    res.sendFile(path.join(__dirname, "/public/adminStatistics/index.html"));
+    res.sendFile(path.join(__dirname, "/public/AdminStatistics/index.html"));
 });
 
-app.get("/BallotEdit", function(req, res) {
+app.get("/ballotEditor", function(req, res) {
     res.sendFile(path.join(__dirname, "/public/ballotEditor/index.html"));
 });
 
