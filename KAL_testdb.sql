@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."Initiative" (
 -- Table americanDreamDB.Office
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS americanDreamDB."Office" (
-  "office_id" PRIMARY KEY,
+  "office_id" INT PRIMARY KEY,
   "election_id" INT NOT NULL,
   "officeName" VARCHAR(45),
   "officeVotesAllowed" INT
