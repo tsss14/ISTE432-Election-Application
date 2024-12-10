@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."User" (
   "username" VARCHAR(45),
   "phone" VARCHAR(45),
   "society_id" INT,
-  "role" VARCHAR(45),
+  "role" VARCHAR(500),
   "password" VARCHAR(45),
   "hasVoted" BOOLEAN
 );
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS americanDreamDB."System" (
 CREATE TABLE IF NOT EXISTS americanDreamDB."Session" (
   "session_id" VARCHAR(255) PRIMARY KEY,
   "user_id" INT,
-  "role" VARCHAR(45),
+  "role" VARCHAR(500),
   "timestamp" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
