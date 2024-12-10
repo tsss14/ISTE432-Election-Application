@@ -1,4 +1,5 @@
 function init() {
+    $( `#login-form` ).remove();
     const header = $('<div>');
     const placeholderName = "placeholder name";
     $(document.body).append(header);
