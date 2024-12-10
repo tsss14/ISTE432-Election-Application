@@ -15,7 +15,7 @@ function displayElections(data) {
 
   $.each(data.rows, function(index, election) {
     var $listItem = $('<a href="#" class="list-group-item list-group-action" data-id="' + election.id + '">')
-    .text("Name: " + election.name + " || Ends at: " + election.endsAt + " || Total Votes" + election.totalVotes)
+    .text("Name: " + election.name + " || Ends at: " + election.endsAt + " || Total Votes: " + election.totalVotes)
     .on('click', function(event) {
       event.preventDefault();
     });

@@ -156,7 +156,7 @@ app.get("/profileView", function(req, res) {
 res.sendFile(path.join(__dirname, "/public/profileView/index.html"));
 });
 
-app.get("/api/ongoingElections", async function(req, res) {
+app.get("/api/onGoingElections", async function(req, res) {
 
 const returnVal = await callOngoingElections();
 if(returnVal === "") {
@@ -166,7 +166,7 @@ if(returnVal === "") {
 }
 });
 
-app.get("/ongoingElections", function(req, res) {
+app.get("/onGoingElections", function(req, res) {
 res.sendFile(path.join(__dirname, "/public/onGoingElections/index.html"));
 });
  
