@@ -1,6 +1,6 @@
 
 async function dataLoad() {
-    const data = await fetch('http://localhost:3000/electionView');
+    const data = await fetch('http://localhost:3000/api/electionView');
     return data;
   } 
 

@@ -178,7 +178,7 @@ app.post("/soccreate", async function(req, res) {
     return res.status(200).send(returnVal);
 });
 
-app.get("/ElectionView", async function(req, res) {
+app.get("/api/ElectionView", async function(req, res) {
     
     const returnVal = await callElection();
     if(returnVal === "") {
@@ -241,6 +241,22 @@ app.get("/ballotEditor", function(req, res) {
 
 app.get("/onGoingElections", function(req, res) {
 res.sendFile(path.join(__dirname, "/public/onGoingElections/index.html"));
+});
+
+app.get("/OfficerMenu", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/OfficerMenu/index.html"));
+});
+
+app.get("/EmployeeMenu", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/EmployeeMenu/index.html"));
+});
+
+app.get("/ElectionView", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/ElectionView/index.html"));
+});
+
+app.get("/ballotView", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/ballotView/index.html"));
 });
 
 
