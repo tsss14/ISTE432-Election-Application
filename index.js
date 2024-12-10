@@ -64,9 +64,9 @@ app.post("/api/login2", async (req, res) => {
     }
 
     try {
-        const sessionID = await validateLogin(username, password);
-        if (sessionID) {
-            res.status(200).json({ sessionID });
+        const sessionObject = await validateLogin(username, password);
+        if (sessionObject) {
+            res.status(200).json({ sessionID: sessionObject });
         } else {
             res.status(401).send("Invalid username or password");
         }
