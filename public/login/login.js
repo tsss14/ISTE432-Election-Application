@@ -18,14 +18,43 @@ function init() {
     $('form').last().addClass('position-absolute top-50 start-50 translate-middle align-middle');
 
     $("button").first().click(async function() {
-      const res = await fetch(`http://localhost:3000/api/login`, {
-		method: "POST",
-		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify({'password': `${$('#InputPassword').val()}`, 'username': `${$('#InputUsername').val()}`})
-	});
-	
-	console.log(await res.text());
-  	//const resJSON = await res.json();
+        try {
+            const res = await fetch(`http://localhost:3000/login`, {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    'password': $('#InputPassword').val(), 
+                    'username': $('#InputUsername').val()
+                })
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                alert(`Login failed: ${errorText}`);
+                return;
+            }
+
+            const resJSON = await res.json();
+            const { role } = resJSON;
+
+            if (role) {
+                // send to menu based on role
+                const scriptPath = `${role}Menu.js`;
+                const scriptTag = document.createElement('script');
+                scriptTag.src = scriptPath;
+                document.body.appendChild(scriptTag);
+            } else {
+                alert("Login succeeded, but no role found.");
+            }
+        } catch (err) {
+            console.error("Error logging in:", err);
+            alert("An error occurred while trying to log in. Please try again.");
+        }
+
+      console.log(await res.text());
+  	  //const resJSON = await res.json();
+
     });
+	
 }
 $(document).ready(init);
