@@ -19,7 +19,7 @@ function init() {
 
     $("button").first().click(async function() {
         try {
-            const res = await fetch(`http://localhost:3000/login2`, {
+            const res = await fetch(`http://localhost:3000/api/login2`, {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
