@@ -218,21 +218,17 @@ async function getAvgQueryTime() {
   }
 
 // Get active ballots per user
-async function fetchActiveBallotsUser(userId) {
-    try {
-        const res = await CLIENT.query(
-            `SELECT * 
-             FROM americandreamdb."Election" e
-             JOIN americandreamdb."User" u ON e.society_id = u.society_id
-             WHERE u.user_id = $1 AND e."endsAt" > NOW()`,
-            [userId]
-        );
-        return res.rows; 
-    } catch (err) {
-        console.error("Database error:", err);
-        throw new Error("Error fetching active ballots");
-    }
+async function fetchActiveBallotsUser(user_id) {
+    const res = await CLIENT.query(`
+        SELECT * 
+        FROM americandreamdb."Election" 
+        WHERE "endsAt" < NOW() 
+        AND "society_id" = (SELECT "society_id" FROM americandreamdb."User" WHERE "user_id" = $1)
+        AND "election_id" = 1
+    `, [user_id]);
+    return res;
 }
+
 
 
   
