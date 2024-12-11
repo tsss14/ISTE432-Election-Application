@@ -9,7 +9,7 @@ function init() {
     var buttons = [button.clone(), button.clone(), button.clone(), button.clone(), button.clone(), button.clone(), button.clone()];
     buttons[0].text("Ballot Creation");
     buttons[0].on('click', function() {
-      window.location.href = '../ballotCreation/index.html';
+      window.location.href = '../BallotCreation/index.html';
     });
 
     buttons[1].text("Your Societies");
@@ -34,7 +34,7 @@ function init() {
 
     buttons[5].text("View Statistics");
     buttons[5].on('click', function() {
-      window.location.href = '../adminStatistics/index.html';
+      window.location.href = '../AdminStatistics/index.html';
     });
 
     buttons[6].text("Logout");
