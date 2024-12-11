@@ -1,6 +1,6 @@
 //import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives } from './dataLayer.js';
 const uuid = require('uuid');
-const { updateName, getUserData, getUserEditData, fetchBallotData, getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchActiveBallots, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives, getProfile} = require('./dataLayer.js');
+const { updateName, getUserData, getUserEditData, fetchBallotData, getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchActiveBallots, fetchActiveBallotsUser, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives, getProfile} = require('./dataLayer.js');
 const bcrypt = require('bcrypt');
 
 function generateSQLTimestamp() { 
@@ -234,6 +234,14 @@ async function getElectionData(user_id) {
     };
 }
 
+// Gets active ballots per user id
+async function getActiveBallotsUser(user_id) {
+    const res = await fetchActiveBallotsUser(user_id);
+    if (res === -1) return -1;
+    return res;
+}
+
+
 // ----------------------------------------------------------------
 
 async function getUser(username) {
@@ -264,6 +272,7 @@ module.exports = {
     createOffice,
     callSocieties,
     callProfile,
+    getActiveBallotsUser,
     getActiveBallots,
     getBallotData,
     getInitiativeData,
