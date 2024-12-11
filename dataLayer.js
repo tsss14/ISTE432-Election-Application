@@ -26,7 +26,7 @@ async function updateName(first, last, username) {
 // updated for pass hashing
 async function getUserData(username) { 
     const res = await CLIENT.query(
-        'SELECT username, password, role FROM americanDreamDB."User" WHERE username = $1',
+        'SELECT user_id, username, password, role FROM americanDreamDB."User" WHERE username = $1',
         [username]
     );
     return res.rows[0]; 
@@ -86,8 +86,8 @@ async function addInitiative(name, desc, election_id) {
 	return res;
 }
 
-function insertSessionID(sessionID, role, timestamp) {
-	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${role}', '${timestamp}');`);
+function insertSessionID(sessionID, user_id, role, timestamp) {
+	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${user_id}, '${role}', '${timestamp}');`);
 }
 
 //gets PreviousElection data
