@@ -44,14 +44,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const candidateList = document.createElement('ul');
             office.candidates.forEach(candidate => {
                 const candidateItem = document.createElement('li');
-                candidateItem.textContent = `${candidate.candidateName} - ${candidate.description}`;
+                const label = document.createElement('label');
+                label.textContent = `${candidate.candidateName} - ${candidate.description}`;
 
-                // select button for each candidate
-                const selectButton = document.createElement('button');
-                selectButton.textContent = 'Select';
-                selectButton.onclick = () => selectCandidate(office.office_id, candidate.candidate_id);
+                // create radio buttons
+                const radioButton = document.createElement('input');
+                radioButton.type = 'radio';
+                radioButton.name = `office-${office.office_id}`; 
+                radioButton.value = candidate.candidate_id;
 
-                candidateItem.appendChild(selectButton);
+                radioButton.onclick = () => selectCandidate(office.office_id, candidate.candidate_id);
+
+                candidateItem.appendChild(radioButton);
+                candidateItem.appendChild(label);
                 candidateList.appendChild(candidateItem);
             });
 
@@ -60,13 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // candidate selection for a specific office
+    // candidate selection
     function selectCandidate(officeId, candidateId) {
         selectedCandidates[officeId] = candidateId;
-        submitVoteButton.disabled = false;  
+        submitVoteButton.disabled = false;
     }
 
-    // vote submission for all offices
+    // vote submission
     async function submitVote() {
         const allOfficesSelected = Object.values(selectedCandidates).every(candidateId => candidateId !== null);
 
@@ -76,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // replace with endpoint later
+            // vote submission endpoint
             const response = await fetch('/submitVote', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
