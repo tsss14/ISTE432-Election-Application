@@ -216,6 +216,26 @@ async function getAvgQueryTime() {
     `);
     return res.rows[0].avg_duration || 0; // Return 0 if no query logs are found
   }
+
+// Get active ballots per user
+async function fetchActiveBallotsUser(user_id) {
+    const query = `
+        SELECT e.*
+        FROM americanDreamDB."Election" e
+        JOIN americanDreamDB."Society" s ON e.society_id = s.society_id
+        JOIN americanDreamDB."Assignment" a ON s.society_id = a.society_id
+        WHERE a.user_id = $1 AND e."endsAt" > NOW()
+    `;
+    try {
+        const res = await CLIENT.query(query, [user_id]);
+        return res.rows; 
+    } catch (err) {
+        console.error("Error fetching active ballots:", err);
+        return -1; 
+    }
+}
+
+
   
 // ----------------------------------------------------------------
 
@@ -265,4 +285,4 @@ module.exports = {  updateName, getUserEditData, getCandidatesForElection, fetch
                     insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
                     addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, 
                     getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime,
-                    getSocieties, getProfile};
+                    getSocieties, getProfile, fetchActiveBallotsUser};
