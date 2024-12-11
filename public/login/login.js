@@ -35,6 +35,7 @@ function init() {
             }
 
             const resJSON = await res.json();
+            // const uid = resJSON.sessionID.uid;
             const role = resJSON.sessionID.role;
             // localStorage.set( `sessionID`, resJSON.sessionID.sessionID );
             // localStorage.set( `role`, role );
