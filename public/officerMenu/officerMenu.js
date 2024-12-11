@@ -17,7 +17,7 @@ function init() {
     });
 
     $('#ongoing').on('click',function() {
-        window.location.href = '../ballotView/index_test.html';
+        window.location.href = '../ballotView/index_test2.html';
     });
 
     $('#past').on('click',function() {
