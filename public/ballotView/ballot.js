@@ -76,7 +76,7 @@ async function submitVote() {
     };
 
     // Submit the vote to the backend
-    const response = await fetch('http://localhost:3000/submitVote', {
+    const response = await fetch('https://teamkal.webdev.gccis.rit.edu/submitVote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(voteData)

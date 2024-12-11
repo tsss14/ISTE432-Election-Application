@@ -1,6 +1,6 @@
 
 async function dataLoad() {
-  const response = await fetch('http://localhost:3000/profileView')
+  const response = await fetch('https://teamkal.webdev.gccis.rit.edu/profileView')
     .then(response => response.json())
     .catch(err => console.log("Couldn't fetch data: ", err));
   if(response && response.endsAt) {

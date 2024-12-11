@@ -1,7 +1,7 @@
 //const { callElection } = require("../../businessLayer");
 
 async function dataLoad() {
-  const response = await fetch('http://localhost:3000/api/pastElections')
+  const response = await fetch('https://teamkal.webdev.gccis.rit.edu/api/pastElections')
     .then(response => response.json())
     .catch(err => console.log("Couldn't fetch data: ", err));
   if(response) {

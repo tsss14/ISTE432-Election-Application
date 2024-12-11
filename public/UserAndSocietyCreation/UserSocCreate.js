@@ -39,7 +39,7 @@ function init() {
     $('form').css('margin', '4vw');
     $('#pageCenter').last().addClass('position-absolute top-50 start-50 translate-middle align-middle d-flex');
     $('#userCreateButton').on('click', async function() {
-      const res = await fetch('http://localhost:3000/usrcreate', {
+      const res = await fetch('https://teamkal.webdev.gccis.rit.edu/usrcreate', {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
 		    body: JSON.stringify({'role': `${$('#roleInp').val()}`, 'username': `${$('#usernameInp').val()}`, 'fname': `${$('#firstNameInp').val()}`, 'lname': `${$('#lastnameInp').val()}`, 'phone': `${$('#phoneInp').val()}`}) 
@@ -52,7 +52,7 @@ function init() {
 	});
 	
     $('#societyCreateButton').on('click', async function() {
-    	const res = await fetch('http://localhost:3000/soccreate', 
+    	const res = await fetch('https://teamkal.webdev.gccis.rit.edu/soccreate', 
     	{
         	method: "POST",
         	headers: {'Content-Type': 'application/json'},

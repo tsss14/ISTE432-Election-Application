@@ -2,7 +2,7 @@ let initiatives = [];
 let candidates = [];
 
 async function addBallotRequest(societyName, electionName) {
-  const res = await fetch("http://localhost:3000/ballotcreate", {
+  const res = await fetch("https://teamkal.webdev.gccis.rit.edu/ballotcreate", {
     method: "POST",
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({"societyName": societyName, "electionName": electionName, "initiatives": initiatives, "candidates": candidates})
@@ -21,7 +21,7 @@ function addCandidate(name, description, office) {
 }
 
 async function addOffice(name, elecName) {
-  const res = await fetch("http://localhost:3000/addoffice", {
+  const res = await fetch("https://teamkal.webdev.gccis.rit.edu/addoffice", {
     method: "POST",
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({"officeName": name, "elec_name": elecName})
@@ -30,7 +30,7 @@ async function addOffice(name, elecName) {
 }
 
 async function populateBallot(elecName) {
-  const res = await fetch("http://localhost:3000/ballotpopulate", {
+  const res = await fetch("https://teamkal.webdev.gccis.rit.edu/ballotpopulate", {
     method: "POST",
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({"electionName": elecName, "initiatives": initiatives, "candidates": candidates})
