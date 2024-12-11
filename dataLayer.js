@@ -28,6 +28,14 @@ async function getUserData(username) {
     return res.rows[0]; 
 }
 
+async function getUserEditData(username) { 
+    const res = await CLIENT.query(
+        'SELECT first_name, last_name, username, role,"Society".name FROM americandreamdb."User" JOIN americandreamdb."Assignment" on "User".user_id = "Assignment".user_id JOIN americandreamdb."Society" on "Assignment".society_id = "Society".society_id  WHERE username = $1',
+        [username]
+    );
+    return res.rows[0]; 
+}
+
 // updated for pass hashing
 async function addUser(username, role, firstName, lastName, phone, plainPassword) { 
     const hashedPassword = await bcrypt.hash(plainPassword, 10); // hash the password with a salt round of 10
@@ -249,7 +257,7 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {  getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchBallotData, getUserData, fetchActiveBallots,
+module.exports = {  getUserEditData, getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchBallotData, getUserData, fetchActiveBallots,
                     insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
                     addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, 
                     getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime,

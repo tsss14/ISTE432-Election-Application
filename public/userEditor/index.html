@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Editor</title>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="userEditor.js"></script>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="text-bg-primary p-3"><a class="btn btn-primary m-2" href="../officerMenu/index.html">
+            < </a>User Editor</div>
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <input type="text" id="userName">
+        <button type="button" class="btn btn-primary" id="findUserButton" onclick="findUser(document.getElementById('userName').value)">Find User</button>
+        <div id="queryContainer"></div>
+    </div>
+</body>
+
+</html> 

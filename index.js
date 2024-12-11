@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const {validateLogin, getInitiativeData, registerUser, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
+const {validateLogin, getUser, getInitiativeData, registerUser, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '/public/')));
@@ -321,6 +321,14 @@ app.post("/submitVote", async function(req, res) {
 });
 
 // -----------------------------------------------------------------
+
+app.post("/findUser", async function(req, res) {
+    const username = req.body.username;
+    const userData = await getUser(username);
+    if(userData != -1) return res.status(200).send(userData);
+    else return res.status(400).send(-1);
+});
+
 
 app.listen(
     port,

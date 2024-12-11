@@ -26,7 +26,7 @@ async function updatePassword(username, plainPassword) {
 }
 
 // change these to update specific user
-const username = "test4"; 
-const newPassword = "!testPass4"; 
+const username = "test1"; 
+const newPassword = "!testPass1"; 
 
 updatePassword(username, newPassword);
