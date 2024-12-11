@@ -219,15 +219,10 @@ async function getAvgQueryTime() {
 
 // Get active ballots per user
 async function fetchActiveBallotsUser(user_id) {
-    const res = await CLIENT.query(`
-        SELECT * 
-        FROM americandreamdb."Election" 
-        WHERE "endsAt" < NOW() 
-        AND "society_id" = (SELECT "society_id" FROM americandreamdb."User" WHERE "user_id" = $1)
-        AND "election_id" = 1
-    `, [user_id]);
+    const res = await CLIENT.query(`select * from americandreamdb."Election" where "endsAt" < NOW() AND "society_id" = 1 AND "election_id" = 24`);
     return res;
 }
+
 
 
 
