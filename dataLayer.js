@@ -26,7 +26,7 @@ async function updateName(first, last, username) {
 // updated for pass hashing
 async function getUserData(username) { 
     const res = await CLIENT.query(
-        'SELECT username, password, role FROM americanDreamDB."User" WHERE username = $1',
+        'SELECT user_id, username, password, role FROM americanDreamDB."User" WHERE username = $1',
         [username]
     );
     return res.rows[0]; 
@@ -86,8 +86,8 @@ async function addInitiative(name, desc, election_id) {
 	return res;
 }
 
-function insertSessionID(sessionID, role, timestamp) {
-	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${role}', '${timestamp}');`);
+function insertSessionID(sessionID, user_id, role, timestamp) {
+	CLIENT.query(`INSERT INTO americandreamdb.sessionids VALUES ('${sessionID}', '${user_id}, '${role}', '${timestamp}');`);
 }
 
 //gets PreviousElection data
@@ -108,7 +108,7 @@ async function getOngoingElections(){
 
 //gets Societies based on user assignment
 async function getSocieties() {
-    const res = await CLIENT.query(`SELECT "Society".name FROM americandreamdb."Society" JOIN americandreamdb."Assiggnment" USING society_id`); // needs to find current user id as well
+    const res = await CLIENT.query(`SELECT "Society".name FROM americandreamdb."Society" JOIN americandreamdb."Assignment" USING society_id`); // needs to find current user id as well
     return res;
 }
 
@@ -216,6 +216,16 @@ async function getAvgQueryTime() {
     `);
     return res.rows[0].avg_duration || 0; // Return 0 if no query logs are found
   }
+
+// Get active ballots per user
+async function fetchActiveBallotsUser(user_id) {
+    const res = await CLIENT.query(`select * from americandreamdb."Election" where "endsAt" < NOW() AND "society_id" = 1 AND "election_id" = 24`);
+    return res;
+}
+
+
+
+
   
 // ----------------------------------------------------------------
 
@@ -265,4 +275,4 @@ module.exports = {  updateName, getUserEditData, getCandidatesForElection, fetch
                     insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
                     addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, 
                     getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime,
-                    getSocieties, getProfile};
+                    getSocieties, getProfile, fetchActiveBallotsUser};

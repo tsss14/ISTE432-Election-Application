@@ -35,12 +35,17 @@ function init() {
             }
 
             const resJSON = await res.json();
+            const uid = resJSON.sessionID.uid;
             const role = resJSON.sessionID.role;
             // localStorage.set( `sessionID`, resJSON.sessionID.sessionID );
             // localStorage.set( `role`, role );
 
             if (role) {
                 // send to menu based on role
+                localStorage.setItem('uid', uid);
+                localStorage.setItem('role', role);
+                localStorage.setItem('sessionID', resJSON.sessionID.sessionID);
+
                 const scriptPath = `../${role}Menu/${role}Menu.js`;
                 const scriptTag = document.createElement('script');
                 scriptTag.src = scriptPath;

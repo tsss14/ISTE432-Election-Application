@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const {switchName, validateLogin, getUser, getInitiativeData, registerUser, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
+const {switchName, validateLogin, getUser, getInitiativeData, getActiveBallotsUser, registerUser, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '/public/')));
@@ -327,6 +327,21 @@ app.post("/submitVote", async function(req, res) {
     
     return res.status(200).send("Vote successfully submitted.");
 });
+
+// Gets active ballot for user id
+app.get("/getActiveBallotsUser", async function(req, res) {
+    const userId = req.query.user_id;
+    if (!userId) {
+        return res.status(400).json({ error: "Missing user_id" });
+    }
+
+    const resp = await getActiveBallotsUser(userId);
+    if (resp === -1) {
+        return res.status(500).json({ error: "Error fetching active ballots" });
+    }
+    return res.status(200).json(resp); // Ensure JSON response
+});
+
 
 // -----------------------------------------------------------------
 

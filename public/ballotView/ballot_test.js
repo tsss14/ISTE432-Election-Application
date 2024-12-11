@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const submitVoteButton = document.getElementById('submit-vote');
+    const uid = localStorage.getItem('uid');
     let selectedCandidateId = null;
 
     // active election and candidates for society_id = 1 (hardcoded for testing)
     async function fetchElectionData() {
         try {
-            const electionResponse = await fetch('http://localhost:3000/getActiveElection');  
+            const electionResponse = await fetch(`http://localhost:3000/getActiveBallotsUser?user_id=${uid}`);  
             const electionData = await electionResponse.json();
-
+            console.log('Election Data:', electionData);
+            
             if (electionData) {
                 // show election details
                 document.getElementById('election-name').textContent = electionData.election.name;
@@ -16,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // show candidates
                 const candidateList = document.getElementById('candidate-list');
-                candidateList.innerHTML = '';  // Clear existing candidates
+                candidateList.innerHTML = '';  
                 electionData.candidates.forEach(candidate => {
                     const candidateItem = document.createElement('li');
                     candidateItem.textContent = `${candidate.candidateName} - ${candidate.description}`;

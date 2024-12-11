@@ -6,6 +6,7 @@ function init() {
     $(header).addClass("text-bg-primary p-3").text("Welcome! " + placeholderName);
     $(document.body).append('<div class="btn-group-vertical" role="group" aria-label="Vertical button group">');
     $('div').last().append('<button type="button" id="societies" class="btn btn-primary">Your Societies</button>');
+    $('div').last().append('<button type="button" id="current"   class="btn btn-primary">Current Election</button>');
     $('div').last().append('<button type="button" id="ongoing"   class="btn btn-primary">Ongoing Elections</button>');
     $('div').last().append('<button type="button" id="past"      class="btn btn-primary">Past Elections</button>');
     //$('div').last().append('<button type="button" class="btn btn-primary">Your Profile</button>');
@@ -19,13 +20,14 @@ function init() {
     $('#ongoing').on('click',function() {
         window.location.href = '../onGoingElections/index.html';
     });
+    
+    $('#current').on('click',function() {
+        window.location.href = '../ballotView/index_test2.html';
+    });
 
     $('#past').on('click',function() {
         window.location.href = '../pastElections/index.html';
     });
 
-    $('#ongoing').on('click',function() {
-        window.location.href = '../onGoingElections/index.html';
-    });
 }
 $(document).ready(init);

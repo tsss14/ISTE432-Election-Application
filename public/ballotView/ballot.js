@@ -1,13 +1,17 @@
 async function loadBallot() {
     // Get the user_id from the textbox input field (temp)
-    const userId = document.getElementById('user_id_input').value;
+    const uid = localStorage.getItem('uid');
+    const sessionID = localStorage.getItem('sessionID');
+    const role = localStorage.getItem('role');
 
-    if (!userId) {
-        alert("Please enter a user ID.");
-        return;
-    }
+    // const userId = document.getElementById('user_id_input').value;
 
-    const electionData = await fetch(`http://localhost:3000/getActiveElection?user_id=${userId}`)
+    // if (!userId) {
+    //    alert("Please enter a user ID.");
+    //    return;
+    // }
+
+    const electionData = await fetch(`http://localhost:3000/getActiveElection?user_id=${uid}`)
         .then(response => response.json())
         .catch(err => console.log("Error fetching election data:", err));
 
@@ -76,7 +80,7 @@ async function submitVote() {
     };
 
     // Submit the vote to the backend
-    const response = await fetch('http://localhost:3000/submitVote', {
+    const response = await fetch('https://teamkal.webdev.gccis.rit.edu/submitVote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(voteData)

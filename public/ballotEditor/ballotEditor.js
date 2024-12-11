@@ -1,5 +1,5 @@
 async function getActiveBallots() {
-    const res = await fetch("http://localhost:3000/getActiveBallots", {
+    const res = await fetch("https://teamkal.webdev.gccis.rit.edu/getActiveBallots", {
         method: "GET",
         headers: {'Content-Type': 'application/json'}
     })
@@ -11,7 +11,7 @@ async function getActiveBallots() {
 }
 
 async function getBallotData(electionID) {
-    let res = await fetch("http://localhost:3000/getBallotInitData", {
+    let res = await fetch("https://teamkal.webdev.gccis.rit.edu/getBallotInitData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({election_id: electionID})
@@ -21,7 +21,7 @@ async function getBallotData(electionID) {
         $('#initiativeSelect').append(`<p>${row.initName}</p>`);
     });
 
-    res = await fetch("http://localhost:3000/getBallotCandData", {
+    res = await fetch("https://teamkal.webdev.gccis.rit.edu/getBallotCandData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({election_id: electionID})
@@ -33,7 +33,7 @@ async function getBallotData(electionID) {
         $('#candidateSelect').append(`<p>${row.name}</p>`);
     });
 
-    res = await fetch("http://localhost:3000/getBallotData", {
+    res = await fetch("https://teamkal.webdev.gccis.rit.edu/getBallotData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({election_id: electionID})
