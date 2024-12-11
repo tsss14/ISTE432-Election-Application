@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // active election and candidates for society_id = 1 (hardcoded for testing)
     async function fetchElectionData() {
         try {
-            const electionResponse = await fetch('http://localhost:3000/getActiveBallotsUser');  
+            const electionResponse = await fetch(`http://localhost:3000/getActiveBallotsUser?user_id=${uid}`);  
             const electionData = await electionResponse.json();
 
             if (electionData) {
