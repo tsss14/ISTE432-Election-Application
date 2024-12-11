@@ -330,16 +330,16 @@ app.post("/submitVote", async function(req, res) {
 
 // Gets active ballot for user id
 app.get("/getActiveBallotsUser", async function(req, res) {
-    const userId = req.query.user_id; 
+    const userId = req.query.user_id;
     if (!userId) {
-        return res.status(400).send("Missing user_id");
+        return res.status(400).json({ error: "Missing user_id" });
     }
-    
+
     const resp = await getActiveBallotsUser(userId);
     if (resp === -1) {
-        return res.status(400).send(-1);
+        return res.status(500).json({ error: "Error fetching active ballots" });
     }
-    return res.status(200).send(resp);
+    return res.status(200).json(resp); // Ensure JSON response
 });
 
 
