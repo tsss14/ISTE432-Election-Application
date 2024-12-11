@@ -17,15 +17,12 @@ function init() {
     });
 
     $('#ongoing').on('click',function() {
-        window.location.href = '../onGoingElections/index.html';
+        window.location.href = '../ballotView/index.html';
     });
 
     $('#past').on('click',function() {
         window.location.href = '../pastElections/index.html';
     });
 
-    $('#ongoing').on('click',function() {
-        window.location.href = '../onGoingElections/index.html';
-    });
 }
 $(document).ready(init);
