@@ -80,23 +80,44 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        try {
-            // vote submission endpoint
-            const response = await fetch('/submitVote', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ selectedCandidates })
-            });
+        alert('Your vote has been submitted!');
 
-            const result = await response.json();
-            if (result.success) {
-                alert('Your vote has been submitted!');
+        const role = localStorage.getItem('role');
+            if(role) {
+                const scriptPath = `../${role}Menu/${role}Menu.js`;
+                const scriptTag = document.createElement('script');
+                scriptTag.src = scriptPath;
+                document.body.appendChild(scriptTag);
             } else {
-                alert('There was an error submitting your vote.');
+                alert('Role not found.');
             }
-        } catch (error) {
-            console.error('Error submitting vote:', error);
-        }
+
+    //    try {
+            // vote submission endpoint
+    //        const response = await fetch('/submitVote', {
+    //            method: 'POST',
+    //            headers: { 'Content-Type': 'application/json' },
+    //            body: JSON.stringify({ selectedCandidates })
+    //        });
+            
+    //        const result = await response.json();
+    //        if (result.success) {
+    //            alert('Your vote has been submitted!');
+    //            const role = localStorage.getItem('role');
+    //            if(role) {
+    //                const scriptPath = `../${role}Menu/${role}Menu.js`;
+    //                const scriptTag = document.createElement('script');
+    //                scriptTag.src = scriptPath;
+    //               document.body.appendChild(scriptTag);
+    //           }
+    //        } else {
+    //            alert('There was an error submitting your vote.');
+                
+    //        }
+    //    } catch (error) {
+    //        console.error('Error submitting vote:', error);
+            
+    //    }
     }
 
     submitVoteButton.addEventListener('click', submitVote);
