@@ -16,7 +16,11 @@ function newConnection(uname, hname, db, pwd,){ //given the proper string parama
 }
 
 
-    
+async function updateName(first, last, username) {
+    await CLIENT.query(`update americandreamdb."User" set first_name = '$1', last_name = '$2' where username = '$3';`,
+    [first, last, username]);
+
+}    
 
 
 // updated for pass hashing
@@ -257,7 +261,7 @@ function termconn(){
     CLIENT.end();
 }
 
-module.exports = {  getUserEditData, getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchBallotData, getUserData, fetchActiveBallots,
+module.exports = {  updateName, getUserEditData, getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchBallotData, getUserData, fetchActiveBallots,
                     insertSessionID, addUser, addSociety, addBallot, addCandidate, addOffice,
                     addInitiative, getPreviousElections, getElection, getElectionID, getOngoingElections, getActiveElection, 
                     getOffices, getCandidates, getInitiatives, getActiveUsers, getActiveElections, logQueryTime, getAvgQueryTime,

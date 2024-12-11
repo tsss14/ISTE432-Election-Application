@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const {validateLogin, getUser, getInitiativeData, registerUser, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
+const {switchName, validateLogin, getUser, getInitiativeData, registerUser, getCandidateData, getBallotData, getActiveBallots, createOffice, populateBallot, createBallot, createUser, createSociety, callPreviousElections, callOngoingElections, callElection,callSocieties, getActiveElectionByUser, getSystemStats, getElectionData, callProfile} = require('./businessLayer.js');
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '/public/')));
@@ -257,6 +257,14 @@ app.get("/ElectionView", function(req, res) {
 
 app.get("/ballotView", function(req, res) {
     res.sendFile(path.join(__dirname, "/public/ballotView/index.html"));
+});
+//--------------------------------------------------------------------------------------
+app.post("/changeName", async function(req, res) {
+    const first = req.body.first_name;
+    const last = req.body.last_name;
+    const username = req.body.username;
+    await switchName(first, last, username); 
+    return res.status(200).send(0);
 });
 
 

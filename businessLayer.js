@@ -1,6 +1,6 @@
 //import { getUserData, insertSessionID, addUser, addSociety, getElections, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives } from './dataLayer.js';
 const uuid = require('uuid');
-const {getUserData, getUserEditData, fetchBallotData, getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchActiveBallots, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives, getProfile} = require('./dataLayer.js');
+const { updateName, getUserData, getUserEditData, fetchBallotData, getCandidatesForElection, fetchInitiativeData, fetchCandidateData, fetchActiveBallots, addOffice, insertSessionID, addUser, addSociety, getPreviousElections, getOngoingElections, getSocieties, getElection, addBallot, getElectionID, addInitiative, addCandidate, getLoggedInUsers, getActiveElections, getAvgQueryResponseTime, getAvgHttpResponseTime, getActiveElection, getOffices, getCandidates, getInitiatives, getProfile} = require('./dataLayer.js');
 const bcrypt = require('bcrypt');
 
 function generateSQLTimestamp() { 
@@ -240,7 +240,12 @@ async function getUser(username) {
     return userdata;
 }
 
-module.exports = { 
+async function switchName(first, last, username) {
+    await updateName(first, last, username);
+}
+
+module.exports = {
+    switchName,
     getUser,
     validateLogin,
     validatePasswordComplexity,
