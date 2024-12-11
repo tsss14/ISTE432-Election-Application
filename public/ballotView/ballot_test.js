@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const electionResponse = await fetch(`http://localhost:3000/getActiveBallotsUser?user_id=${uid}`);  
             const electionData = await electionResponse.json();
-
+            console.log('Election Data:', electionData);
+            
             if (electionData) {
                 // show election details
                 document.getElementById('election-name').textContent = electionData.election.name;
